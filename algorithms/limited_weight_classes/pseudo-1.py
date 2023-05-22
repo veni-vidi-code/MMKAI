@@ -91,13 +91,13 @@ def generate_and_filter_possible_arrays(weight: int, items: list[Item], knapsack
 def solve(knapsacks: list[Knapsack], items: list[Item],
           items_by_weight: Optional[dict[int, list[Item]]] = None) -> tuple[int, dict] | None:
     """
-    Solves the knapsack problem using the pseudo-polynomial algorithm.
+    Solves the knapsack problem using the pseudo-polynomial algorithm by basically bruteforcing
+    all possible distributions of items of each weight class into the knapsacks.
     :param knapsacks: list of knapsacks
     :param items: list of items
-    :return: None
     """
     if len(knapsacks) == 0 or len(items) == 0:
-        return
+        return 0, dict()
 
     if items_by_weight is None:
         items_by_weight = get_weight_dict(items)
