@@ -35,4 +35,10 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
 
     model.optimize()
 
-    return model.objVal, x
+    solution = dict()
+    for item in items:
+        for knapsack in knapsacks:
+            if x[item, knapsack].X > 0.5:
+                solution[item] = knapsack
+
+    return model.objVal, solution
