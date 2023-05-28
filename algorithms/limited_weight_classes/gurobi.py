@@ -25,20 +25,53 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
                                              obj=item.profit)
 
     # add constraints
-    model.addConstrs((x.sum(item, '*') <= 1 for item in items), name="item once")
+    model.addConstrs((x.sum(item, '*') <= 1 for item in items))
 
     model.addConstrs(
-        (grb.quicksum(x[item, knapsack] * item.weight for item in items) <= knapsack.capacity for knapsack in
-         knapsacks), name="knapsack capacity")
+        (grb.quicksum(x[item, knapsack] * item.weight
+                      for item in items if item.restrictions is None or knapsack in item.restrictions)
+         <= knapsack.capacity for knapsack in knapsacks), name="knapsack capacity")
 
     model.update()
-
+    print("Model created")
     model.optimize()
 
     solution = dict()
     for item in items:
-        for knapsack in knapsacks:
+        for knapsack in (item.restrictions if item.restrictions is not None else knapsacks):
             if x[item, knapsack].X > 0.5:
                 solution[item] = knapsack
 
     return model.objVal, solution
+
+
+
+if __name__ == '__main__':
+    import random
+    import time
+
+    topend = 5000
+
+    numer_of_knapsacks = 30
+    print(f"Number of knapsacks: {numer_of_knapsacks}")
+
+    knapsacks = [Knapsack(random.randint(1, topend)) for _ in range(numer_of_knapsacks)]
+
+    number_of_weightclasses = 20
+    print(f"Number of weight classes: {number_of_weightclasses}")
+
+    weightclasses = [random.randint(1, topend) for _ in range(number_of_weightclasses)]
+
+    number_of_items = topend
+    print(f"Number of items: {number_of_items}")
+
+    items = [Item(random.randint(1, topend), random.choice(weightclasses),
+                  random.choices(knapsacks, k=random.randint(1, topend))) for _ in range(number_of_items)]
+
+    print("Solving...")
+    start = time.time()
+    value, solution = solve(knapsacks, items)
+    end = time.time()
+    print(f"Value: {value}")
+    print(f"Time: {end - start}")
+

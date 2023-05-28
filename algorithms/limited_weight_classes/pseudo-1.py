@@ -66,6 +66,11 @@ def generate_and_filter_possible_arrays(weight: int, items: list[Item], knapsack
     g = nx.DiGraph({i: {k: {"weight": 0, "capacity": 1} for k in
                         (i.restrictions if i.restrictions is not None else knapsacks)}
                     for i in items})
+
+    # ensure all knapsacks are in the graph
+    for k in knapsacks:
+        g.add_node(k)
+
     g.add_node("source")
     for i in items:
         g.add_edge("source", i, weight=-i.profit, capacity=1)
@@ -122,7 +127,6 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
             for j, w in enumerate(weights):
                 kapsum += possibilities[j][current_pos[j]][0][i] * w
             if kapsum > k.capacity:
-                print("invalid")
                 break
         else:
             value = 0
@@ -150,6 +154,8 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
         g = nx.DiGraph({i: {k: {"weight": 0, "capacity": 1} for k in
                             (i.restrictions if i.restrictions is not None else knapsacks)}
                         for i in items_by_weight[weight]})
+        for k in knapsacks:
+            g.add_node(k)
         g.add_node("source")
         for i in items_by_weight[weight]:
             g.add_edge("source", i, weight=-i.profit, capacity=1)
@@ -162,9 +168,40 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
         flow = nx.min_cost_flow(g)
         for item in items_by_weight[weight]:
             solution[item] = None
-            for knapsack in knapsacks:
+            for knapsack in item.restrictions if item.restrictions is not None else knapsacks:
                 if flow[item][knapsack] == 1:
                     solution[item] = knapsack
                     break
 
     return current_max, solution
+
+
+if __name__ == '__main__':
+    import random
+    import time
+
+    topend = 100
+
+    numer_of_knapsacks = 30
+    print(f"Number of knapsacks: {numer_of_knapsacks}")
+
+    knapsacks = [Knapsack(random.randint(1, topend)) for _ in range(numer_of_knapsacks)]
+
+    number_of_weightclasses = 10
+    print(f"Number of weight classes: {number_of_weightclasses}")
+
+    weightclasses = [random.randint(1, topend) for _ in range(number_of_weightclasses)]
+
+    number_of_items = topend
+    print(f"Number of items: {number_of_items}")
+
+    items = [Item(random.randint(1, topend), random.choice(weightclasses),
+                  random.choices(knapsacks, k=random.randint(1, topend))) for _ in range(number_of_items)]
+
+    print("Solving...")
+    start = time.time()
+    value, solution = solve(knapsacks, items)
+    end = time.time()
+    print(f"Value: {value}")
+    print(f"Time: {end - start}")
+
