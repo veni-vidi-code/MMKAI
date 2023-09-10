@@ -30,7 +30,7 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
         items_used = items_by_weight[weight]
         n = len(items_used)
 
-        g = nx.DiGraph({i: {k: {"weight": 0, "capacity": 1} for k in
+        g = nx.DiGraph({i: {k: {"capacity": 1} for k in
                             (i.restrictions if i.restrictions is not None else knapsacks)}
                         for i in items_used})
 
@@ -40,7 +40,11 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
 
         g.add_node("source")
         for i in items_used:
-            g.add_edge("source", i, weight=-1, capacity=1)
+            g.add_edge("source", i, capacity=1)
+
+        g.add_node("sink")
+        for k in knapsacks:
+            g.add_edge(k, "sink", weight=0, capacity=k.capacity)
 
         adjusted_knapsacks_capacities_by_pos = []
         for possibility in possibilities:
@@ -68,16 +72,12 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
                         pos[j] = komma_pos[j] - komma_pos[j - 1]
 
                     # test the pos
-                    s = 0
                     for a, b in enumerate(pos):
-                        s += b
-                        g.nodes[knapsacks[a]]["demand"] = b
-                    g.nodes["source"]["demand"] = -s
-                    try:
-                        x = nx.min_cost_flow_cost(g)
+                        g[knapsacks[a]]['sink']["capacity"] = b
+
+                    x = nx.algorithms.flow.maximum_flow_value(g, "source", "sink")
+                    if x == i:
                         res.append([pos])
-                    except nx.NetworkXUnfeasible:
-                        ...
 
                     # find next komma_pos
                     for k in range(m - 1, 0, -1):
@@ -114,17 +114,12 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
                         pos[j] = komma_pos[j] - komma_pos[j - 1]
 
                     # test the pos
-                    s = 0
                     for a, b in enumerate(pos):
-                        s += b
-                        g.nodes[knapsacks[a]]["demand"] = b
-                    g.nodes["source"]["demand"] = -s
-                    try:
-                        x = nx.min_cost_flow_cost(g)
-                        assert sum(_ for _ in pos) == i
-                        res.append([*possibility, pos])
-                    except nx.NetworkXUnfeasible:
-                        ...
+                        g[knapsacks[a]]['sink']["capacity"] = b
+
+                    x = nx.algorithms.flow.maximum_flow_value(g, "source", "sink")
+                    if x == i:
+                        res.append([pos])
 
                     # find next komma_pos
                     for k in range(m - 1, 0, -1):
