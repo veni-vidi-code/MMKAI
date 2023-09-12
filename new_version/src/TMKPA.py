@@ -376,11 +376,12 @@ class TMKPA:
             self.current_value = c_val + i * self.item_classes[current_itemclass].profit
             if not self._bound(current_itemclass, current_knapsack, i, m):
                 break
-        m = deepcopy(heuristic_solution)
-        for i in range(current_val - 1, -1, -1):
-            self.current_value = c_val + i * self.item_classes[current_itemclass].profit
-            if not self._bound(current_itemclass, current_knapsack, i, m):
-                break
+        if current_val > 0: # deepcopy is expensive
+            m = deepcopy(heuristic_solution)
+            for i in range(current_val - 1, -1, -1):
+                self.current_value = c_val + i * self.item_classes[current_itemclass].profit
+                if not self._bound(current_itemclass, current_knapsack, i, m):
+                    break
 
     def _bound(self, current_itemclass: int, current_knapsack: int, fixed_to: int,
                previous_matchings: list[MatchingSave]):
