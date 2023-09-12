@@ -14,9 +14,6 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
     # We will be maximizing
     model.modelSense = grb.GRB.MAXIMIZE
 
-    # We will be highly symmetric
-    model.setParam('Symmetry', 2)
-
     # create variables
     x = grb.tupledict()
     for item in items:
@@ -41,9 +38,9 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
         for knapsack in (item.restrictions if item.restrictions is not None else knapsacks):
             if x[item, knapsack].X > 0.5:
                 solution[item] = knapsack
+    print([(i, i.X) for i in model.getVars()])
 
     return model.objVal, solution
-
 
 
 if __name__ == '__main__':
@@ -74,4 +71,3 @@ if __name__ == '__main__':
     end = time.time()
     print(f"Value: {value}")
     print(f"Time: {end - start}")
-

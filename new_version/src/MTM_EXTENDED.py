@@ -27,10 +27,7 @@ class MTM_EXTENDED:
                                    name=f'x[{item.identifier}]',
                                    obj=item.profit)
 
-        model.addConstrs(
-            (grb.quicksum(x[item] * item.weight
-                          for item in items)
-             <= capacity), name="knapsack capacity")
+        model.addConstr(grb.quicksum(x[item] * item.weight for item in items) <= capacity, name="knapsack capacity")
 
         model.update()
         model.optimize()
@@ -39,6 +36,9 @@ class MTM_EXTENDED:
 
     def _upper_bound(self, current_knapsack) -> int:
         # Surrogate Relaxation
+        if current_knapsack == -1:
+            z, _ = self._solve_single_kp(sum((k.capacity for k in self.knapsacks)), self.items)
+            return z + self.current_value
         z, _ = self._solve_single_kp(sum((k.capacity for k in self.knapsacks[current_knapsack:])), self.items)
         return z + self.current_value
 
@@ -51,7 +51,8 @@ class MTM_EXTENDED:
             items = [item for item in heuristik_items if item.weight <= k and item in knapsack.eligible_items]
             z, x = self._solve_single_kp(k, items)
             L += z
-            heuristic_solution[knapsack] = x
+            heuristic_solution[knapsack] = sorted(list(x), key=lambda x: x.profit / x.weight, reverse=True)
+
             heuristik_items = [item for item in heuristik_items if item not in x]
         return L, heuristic_solution
 

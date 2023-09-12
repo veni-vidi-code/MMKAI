@@ -1,9 +1,9 @@
+from __future__ import annotations
+
 from itertools import count
 from typing import TYPE_CHECKING
 import networkx as nx
 
-if TYPE_CHECKING:
-    from __future__ import annotations
 
 
 class Knapsack:
@@ -17,6 +17,9 @@ class Knapsack:
         self.remaining_capacity = capacity
 
     def __str__(self):
+        return f'Knapsack {self.identifier} ({self.capacity})'
+
+    def __repr__(self):
         return f'Knapsack {self.identifier} ({self.capacity})'
 
     def __hash__(self):
@@ -42,10 +45,16 @@ class Item:
             knapsack.eligible_items.add(self)
 
     def __str__(self):
-        return f'Item {self.identifier} ({self.profit}, {self.weight})'
+        return f'Item {self._identifier} ({self.profit}, {self.weight})'
+
+    def __repr__(self):
+        return f'Item {self._identifier} ({self.profit}, {self.weight})'
 
     def __hash__(self):
-        return self.identifier
+        return self._identifier
+
+    def __eq__(self, other):
+        return hash(self) == hash(other)
 
     @property
     def identifier(self):
@@ -84,6 +93,9 @@ class ItemClass(object):
     def __str__(self):
         return f'ItemClass ({self.profit}, {self.weight})'
 
+    def __repr__(self):
+        return f'ItemClass ({self.profit}, {self.weight})'
+
     def __hash__(self):
         return hash((self.profit, self.weight))
 
@@ -106,12 +118,12 @@ class ItemClass(object):
         return self._weight
 
     def add_item(self, restrictions: set[Knapsack]):
-        item = Item(self.profit, self.weight, restrictions, self)
+        item = Item(self.profit, self.weight, set(restrictions), self)
         return item
 
     def prepare(self, knapsacks: list[Knapsack]):
         self._sorted_items = sorted(self.items, key=lambda x: x.profit / x.weight, reverse=True)
         self._available_spaces = [min(k.capacity // self._weight, len(self.items)) for k in knapsacks]
         self._graph = nx.Graph(
-            {i: ((knapsack, j) for i, knapsack in enumerate(knapsacks) for j in range(self._available_spaces[i])) for i
+            {i: ((i, j) for i, knapsack in enumerate(knapsacks) for j in range(self._available_spaces[i])) for i
              in self._sorted_items})
