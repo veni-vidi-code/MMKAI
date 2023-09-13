@@ -134,7 +134,8 @@ class TMKPA:
         model.optimize()
 
         if model.status == grb.GRB.Status.OPTIMAL:
-            return model.objVal
+            return model.objVal + self.current_value - sum(previous_matchings[current_fixed_itemclass].match_vec) * \
+                      self.item_classes[current_fixed_itemclass].profit
         else:
             # calculate IIS solution
             # model.computeIIS()
@@ -144,7 +145,7 @@ class TMKPA:
 
     def _reduce_matching_by_one(self, current_itemclass: int,
                                 knapsack_to_reduce_index: int,
-                                matching: dict, graph: nx.Graph, remaining_capacity: list) -> bool:
+                                matching: dict, graph: nx.Graph, remaining_capacity: list, matching_vec: list) -> bool:
         """
         Attempts to reduce matching at given index by one without changing matching count in higher knapsacks
         or decreasing total matching count
@@ -157,12 +158,10 @@ class TMKPA:
         while stack:
             x = stack.pop()
             vertex = x[0]
-            if isinstance(vertex, int):
+            if isinstance(vertex, Item):
                 # vertex is an item
                 # get all neighbouring knapsacks
                 knapsacks = [(i, x) for i in graph.neighbors(vertex) if i not in checked]
-                if vertex in matching:
-                    knapsacks.remove((matching[vertex], x))
                 stack.extend(knapsacks)
                 checked.update((knapsack[0] for knapsack in knapsacks))
             else:
@@ -174,23 +173,25 @@ class TMKPA:
                 elif vertex[0] > current_itemclass:
                     # we can reduce the matching
                     # construct the path
-                    path = [vertex]
+                    path = []
                     while x:
                         path.append(x[0])
                         x = x[1]
                     # reduce the matching
-                    for i in range(0, len(path), 2):
+                    for i in range(0, len(path) - 1, 2):
                         matching[path[i]] = path[i + 1]
                         matching[path[i + 1]] = path[i]
                     matching.pop(path[-1])
                     remaining_capacity[knapsack_to_reduce_index] += self.item_classes[current_itemclass].weight
                     remaining_capacity[vertex[0]] -= self.item_classes[current_itemclass].weight
+                    matching_vec[knapsack_to_reduce_index] -= 1
+                    matching_vec[vertex[0]] += 1
                     return True
 
         return False
 
     def _increase_matching_by_one(self, current_itemclass, knapsack_to_increase_index: int, matching: dict,
-                                  graph: nx.Graph, remaining_capacity: list[int]) -> bool:
+                                  graph: nx.Graph, remaining_capacity: list[int], matching_vec: list) -> bool:
         """
         Attempts to increase matching at given index by one without changing matching count in higher knapsacks
         or changing total matching count
@@ -204,12 +205,14 @@ class TMKPA:
         while stack:
             x = stack.pop()  # TODO compare to dfs
             vertex = x[0]
-            if isinstance(vertex, int):
+            if isinstance(vertex, Item):
                 # vertex is an item
-                assert vertex not in matching
-                if matching[vertex] not in checked:
+                if vertex in matching and matching[vertex] not in checked:
                     stack.append((matching[vertex], x))
                     checked.add(matching[vertex])
+                elif vertex not in matching:
+                    print(vertex, matching)
+                    raise Exception("Matching not maximal")
             else:
                 # vertex is a knapsack
                 if vertex[0] <= current_itemclass:
@@ -231,6 +234,8 @@ class TMKPA:
                     matching.pop(vertex)
                     remaining_capacity[knapsack_to_increase_index] -= self.item_classes[current_itemclass].weight
                     remaining_capacity[vertex[0]] += self.item_classes[current_itemclass].weight
+                    matching_vec[knapsack_to_increase_index] += 1
+                    matching_vec[vertex[0]] -= 1
                     return True
         return False
 
@@ -257,38 +262,40 @@ class TMKPA:
                     distances[v] = 0
                     queue.append(v)
                 else:
-                    distances[v] = -1
-            distances[None] = -1
+                    distances[v] = float("inf")
+            distances[None] = float("inf")
             while queue:
                 v = queue.popleft()
                 if distances[v] < distances[None]:
                     for u in graph[v]:
-                        if distances[matching.get(u, None)] == -1:
+                        if distances[matching.get(u, None)] == float("inf"):
                             distances[matching.get(u, None)] = distances[v] + 1
                             queue.append(matching.get(u, None))
-            return distances[None] != -1
+            return distances[None] != float("inf")
 
         def depth_first_search(v):
             if v is not None:
                 for u in graph[v]:
-                    if distances[matching[u]] == distances[v] + 1:
-                        if depth_first_search(matching[u]):
+                    if distances[matching.get(u, None)] == distances[v] + 1:
+                        if depth_first_search(matching.get(u, None)):
                             if u not in matching:
                                 match_vec[u[0]] += 1
                                 remaining_capacity[u[0]] -= itemclass.weight
                             matching[u] = v
                             matching[v] = u
                             return True
-                distances[v] = -1
+                distances[v] = float("inf")
                 return False
             return True
 
-        num_matched_pairs = 0
         while breadth_first_search():
             for v in items:
                 if matching.get(v, None) is None:
-                    if depth_first_search(v):
-                        num_matched_pairs += 1
+                    depth_first_search(v)
+
+        # this is debug code
+        assert len(matching) == sum(match_vec) * 2
+        assert len(matching) == len(nx.algorithms.bipartite.hopcroft_karp_matching(graph, items))
 
     def _adjust_matching(self, matching_save: MatchingSave, remaining_capacity: list[int]):
         """
@@ -301,12 +308,11 @@ class TMKPA:
         matching = matching_save.matching
         graph = matching_save.graph
         match_vec = matching_save.match_vec
-        for i in range(len(self.knapsacks)):
-            remaining_capacity[i] = remaining_capacity[i] - match_vec[i] * item_class.weight
+
         # remove all nodes with to little remaining capacity
         for node in list(graph.nodes):
-            if isinstance(node, tuple) and remaining_capacity[node[0]] != 0\
-                    and node[1] > remaining_capacity[node[0]] // item_class.weight:
+            if isinstance(node, tuple) and remaining_capacity[node[0]] != 0 \
+                    and node[1] >= remaining_capacity[node[0]] // item_class.weight:
                 graph.remove_node(node)
                 if node in matching:
                     x = matching.pop(node)
@@ -317,17 +323,20 @@ class TMKPA:
                         if (node[0], i) not in matching:
                             matching[x] = (node[0], i)
                             matching[(node[0], i)] = x
+                            match_vec[node[0]] += 1
                             break
 
         # if there are increasing capacities, add nodes and edges
         for i in range(len(self.knapsacks)):
-            if remaining_capacity[i] > 0:
-                for j in range(remaining_capacity[i] // item_class.weight):
-                    if (i, j) not in matching:
-                        graph.add_node((i, j))
-                        for item in item_class.items:
-                            if self.knapsacks[i] in item.restrictions:
-                                graph.add_edge((i, j), item)
+            for j in range(remaining_capacity[i] // item_class.weight):
+                if (i, j) not in matching:
+                    graph.add_node((i, j))
+                    for item in item_class.items:
+                        if self.knapsacks[i] in item.restrictions:
+                            graph.add_edge((i, j), item)
+
+        for i in range(len(self.knapsacks)):
+            remaining_capacity[i] = remaining_capacity[i] - match_vec[i] * item_class.weight
 
         # maximize matching by searching for augmenting paths
         self._improve_matching(matching, graph, item_class, match_vec, remaining_capacity)
@@ -340,18 +349,19 @@ class TMKPA:
         remaining_capacity = previous_matchings[current_fixed_itemclass + 1].remaining_capacity.copy()
         if current_save.match_vec[current_fixed_knapsack] < fixed_to:
             x = self._increase_matching_by_one(current_fixed_itemclass, current_fixed_knapsack,
-                                               current_save.matching, current_save.graph, remaining_capacity)
+                                               current_save.matching, current_save.graph, remaining_capacity,
+                                               current_save.match_vec)
             if not x:
                 return -1, previous_matchings
 
         elif current_save.match_vec[current_fixed_knapsack] > fixed_to:
             x = self._reduce_matching_by_one(current_fixed_itemclass, current_fixed_knapsack,
-                                             current_save.matching, current_save.graph, remaining_capacity)
+                                             current_save.matching, current_save.graph, remaining_capacity,
+                                             current_save.match_vec)
             if not x:
                 return -1, previous_matchings
 
-        bound = sum(current_save.match_vec[current_fixed_knapsack + 1:]) * self.item_classes[
-            current_fixed_itemclass].profit + self.current_value
+        bound = self.current_value
 
         # ensure all following matchings are valid and maximal
         for i in range(current_fixed_itemclass + 1, len(self.item_classes)):
@@ -361,27 +371,33 @@ class TMKPA:
         return bound, previous_matchings
 
     def _branch(self, current_itemclass: int, current_knapsack: int, heuristic_solution: list[MatchingSave]):
+        cval_change = 0
         if current_knapsack >= len(self.knapsacks) - 1:
             current_itemclass += 1
             current_knapsack = 0
+            cval_change = sum(heuristic_solution[current_itemclass].match_vec) \
+                                  * self.item_classes[current_itemclass].profit
+            self.current_value += cval_change
         else:
             current_knapsack += 1
+
+        if current_itemclass >= len(self.item_classes) - 1:
+            self.current_value -= cval_change
+            return
 
         current_val = heuristic_solution[current_itemclass].match_vec[current_knapsack]
         available_spaces = heuristic_solution[current_itemclass].remaining_capacity[current_knapsack] // \
                            self.item_classes[current_itemclass].weight
         m = deepcopy(heuristic_solution)
-        c_val = self.current_value
-        for i in range(current_val, available_spaces):
-            self.current_value = c_val + i * self.item_classes[current_itemclass].profit
+        for i in range(current_val, available_spaces + 1):
             if not self._bound(current_itemclass, current_knapsack, i, m):
                 break
-        if current_val > 0: # deepcopy is expensive
+        if current_val > 0:  # deepcopy is expensive
             m = deepcopy(heuristic_solution)
             for i in range(current_val - 1, -1, -1):
-                self.current_value = c_val + i * self.item_classes[current_itemclass].profit
                 if not self._bound(current_itemclass, current_knapsack, i, m):
                     break
+        self.current_value -= cval_change
 
     def _bound(self, current_itemclass: int, current_knapsack: int, fixed_to: int,
                previous_matchings: list[MatchingSave]):
@@ -394,9 +410,12 @@ class TMKPA:
         # calculate lower bound
         L, heuristic_solution = self._lower_bound(current_itemclass, current_knapsack, fixed_to, previous_matchings)
 
-        if L != sum(sum(heuristic_solution[itemclass].match_vec) for itemclass in range(len(self.item_classes))) and L!= -1:
-            raise Exception("Lower bound is incorrect")
-
+        if L != sum(sum(i.match_vec) for i in heuristic_solution) and L != -1:
+            raise Exception("Lower bound is incorrect, it should be "
+                            + str(sum(sum(i.match_vec) for i in heuristic_solution))
+                            + " but is " + str(L) + ". The number of matchings is "
+                            + str([sum(i.match_vec) for i in heuristic_solution]) + str(
+                [len(i.matching) for i in heuristic_solution]))
 
         if L == -1:
             return False
@@ -417,8 +436,8 @@ class TMKPA:
             for item_class in self.item_classes:
                 graph = item_class._graph.copy()
                 graph.remove_nodes_from(list((i, j) for i in range(len(self.knapsacks))
-                                         for j in range(remaining_capacity[i] // item_class.weight,
-                                                        item_class._available_spaces[i])))
+                                             for j in range(remaining_capacity[i] // item_class.weight,
+                                                            item_class._available_spaces[i])))
                 matching = nx.algorithms.bipartite.hopcroft_karp_matching(graph, item_class.items)
                 match_vec = [0 for _ in self.knapsacks]
                 for i, knapsack in enumerate(self.knapsacks):
@@ -432,7 +451,7 @@ class TMKPA:
             self.best_solution_value = L
             self.best_solution = deepcopy(matchings)
 
-            self._branch(0, -1, matchings)
+            self._branch(-1, len(self.knapsacks), matchings)
             self.solved = True
 
             self.transformed_best_solution = {i: [] for i in self.knapsacks}

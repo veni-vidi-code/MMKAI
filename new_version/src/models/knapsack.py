@@ -37,6 +37,8 @@ class Item:
     def __init__(self, profit: int, weight: int, restrictions: set[Knapsack], item_class: ItemClass):
         self._identifier = next(self._counter)
         self._profit = profit
+        assert weight > 0
+        assert profit > 0
         self._weight = weight
         self._restrictions = restrictions
         self._weight_class = item_class
@@ -71,6 +73,10 @@ class Item:
     @property
     def restrictions(self):
         return self._restrictions
+
+    @property
+    def weight_class(self):
+        return self._weight_class
 
 
 class ItemClass(object):

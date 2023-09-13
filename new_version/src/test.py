@@ -1,5 +1,6 @@
 import pickle
 import random
+import sys
 import time
 
 from algorithms.limited_weight_classes.gurobi import solve
@@ -9,7 +10,10 @@ from new_version.src.models.knapsack import Knapsack, Item, ItemClass
 
 import gurobipy as grb
 
-random.seed(42)
+# random.seed(42)
+seed = random.randrange(sys.maxsize)
+random.seed(seed)
+print(f"Seed: {seed}")
 
 topend = 100
 
@@ -32,9 +36,11 @@ items = [random.choice(weightclasses).add_item(knapsacks) for _ in
 
 
 if __name__ == '__main__':
+    from pprint import pprint
     print("Solving...")
 
-    class_to_use = input("Class to use (1) TMKPA, (2) MTM_EXTENDED: ")
+    #class_to_use = input("Class to use (1) TMKPA, (2) MTM_EXTENDED: ")
+    class_to_use = "1"
     if "1" in class_to_use or "TMKPA" in class_to_use:
         solver = TMKPA(weightclasses, knapsacks, items)
     elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
@@ -46,16 +52,28 @@ if __name__ == '__main__':
     end = time.time()
 
     start_gurobi = time.time()
-    gurobisol, _ = solve(knapsacks, items)
+    gurobisol, gurobisolution = solve(knapsacks, items)
     end_gurobi = time.time()
 
     print(f"\033[92mValue: {val}")
     print(f"Time: {end - start}")
     print(f"Solution: {sol}")
 
+    pprint(solver.best_solution)
+
 
     print(f"Gurobi Value: {gurobisol}")
     print(f"Gurobi Time: {end_gurobi - start_gurobi}\033[0m")
+
+
+    # transform gurobisol to a match_vec
+    match_vec = {i: [0 for _ in range(len(knapsacks))] for i in weightclasses}
+    for item, knapsack in gurobisolution.items():
+        match_vec[item.weight_class][knapsacks.index(knapsack)] += 1
+
+    pprint(match_vec)
+
+
 
     from pprint import pprint
     #pprint(_)
