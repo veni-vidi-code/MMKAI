@@ -8,6 +8,14 @@ import gurobipy as grb
 
 from copy import deepcopy
 
+def copy_graph(graph: nx.Graph):
+    G = graph.__class__() # This copys the graph and is faster than copy since there are no labels
+    G.graph.update(graph.graph)
+    G.add_nodes_from((n, d) for n, d in graph._node.items())
+    G.add_edges_from(
+        graph.edges
+    )
+    return G
 
 class MatchingSave:
     def __init__(self, matching: dict, graph: nx.Graph, remaining_capacity: list[int], match_vec: list[int],
@@ -21,7 +29,7 @@ class MatchingSave:
     def __deepcopy__(self, memodict=None):
         if memodict is None:
             memodict = {}
-        return MatchingSave(self.matching.copy(), self.graph.copy(),
+        return MatchingSave(self.matching.copy(), copy_graph(self.graph),
                             self.remaining_capacity.copy(), self.match_vec.copy(), self.item_class)
 
     def __str__(self):
@@ -55,93 +63,34 @@ class TMKPA:
 
         self.solved = False
 
-    def _solve_single_kp(self, capacity, items: list[Item]) -> (int, set[Item]):
-        model = grb.Model()
-
-        # We will be maximizing
-        model.modelSense = grb.GRB.MAXIMIZE
-
-        # create variables
-        x = grb.tupledict()
-        for item in items:
-            x[item] = model.addVar(vtype=grb.GRB.BINARY,
-                                   name=f'x[{item.identifier}]',
-                                   obj=item.profit)
-
-        model.addConstrs(
-            (grb.quicksum(x[item] * item.weight
-                          for item in items)
-             <= capacity), name="knapsack capacity")
-
-        model.update()
-        model.optimize()
-
-        return model.objVal, {item for item in items if x[item].X > 0.5}
-
     def _upper_bound(self, current_fixed_itemclass, current_fixed_knapsack, fixed_to, previous_matchings) -> int:
-        model = grb.Model()
 
-        # We will be maximizing
-        model.modelSense = grb.GRB.MAXIMIZE
+        prerequire = sum(previous_matchings[current_fixed_itemclass].match_vec[knapsack] for knapsack in
+                         range(current_fixed_knapsack)) + fixed_to
 
-        # create variables
-        x = grb.tupledict()
-        for item in self.item_classes[current_fixed_itemclass].items:
-            for knapsack in range(len(self.knapsacks)):
-                x[item, knapsack] = model.addVar(vtype=grb.GRB.BINARY,
-                                                 name=f'x[{item.identifier}, {knapsack}]',
-                                                 obj=item.profit)
+        remaining_capacity = sum(previous_matchings[current_fixed_itemclass].remaining_capacity) - prerequire * \
+                                self.item_classes[current_fixed_itemclass].weight
 
-        y = grb.tupledict()
-        for itemclass in self.item_classes[current_fixed_itemclass + 1:]:
-            for item in itemclass.items:
-                for knapsack in range(len(self.knapsacks)):
-                    y[item, knapsack] = model.addVar(vtype=grb.GRB.BINARY,
-                                                     name=f'y[{item.identifier}, {knapsack}]',
-                                                     obj=item.profit)
-
-        z = grb.tupledict()
-        for knapsack in range(current_fixed_knapsack + 1):
-            z[knapsack] = model.addVar(vtype=grb.GRB.INTEGER,
-                                       name=f'z[{knapsack}]',
-                                       obj=0)
-
-        model.addConstrs(
-            z[knapsack] == quicksum(x[item, knapsack] for item in self.item_classes[current_fixed_itemclass].items) for
-            knapsack in range(current_fixed_knapsack + 1))
-
-        model.addConstr(z[current_fixed_knapsack] == fixed_to)
-        model.addConstrs(z[knapsack] == previous_matchings[current_fixed_itemclass].match_vec[knapsack] for knapsack in
-                         range(current_fixed_knapsack))
-
-        model.addConstrs(
-            quicksum(x[item, knapsack] for knapsack in range(len(self.knapsacks))) <= 1 for item in
-            self.item_classes[current_fixed_itemclass].items)
-
-        model.addConstrs(
-            quicksum(y[item, knapsack] for knapsack in range(len(self.knapsacks))) <= 1 for itemclass in
-            self.item_classes[current_fixed_itemclass + 1:] for item in itemclass.items)
-
-        model.addConstrs(
-            quicksum(x[item, knapsack] for item in self.item_classes[current_fixed_itemclass].items) *
-            self.item_classes[current_fixed_itemclass].weight +
-            quicksum(y[item, knapsack] * item.weight for item in itemclass.items) <= self.knapsacks[knapsack].capacity
-            for itemclass in
-            self.item_classes[current_fixed_itemclass + 1:] for knapsack in
-            range(len(self.knapsacks)))  # TODO asjust to remaining capacity
-
-        model.update()
-        model.optimize()
-
-        if model.status == grb.GRB.Status.OPTIMAL:
-            return model.objVal + self.current_value - sum(previous_matchings[current_fixed_itemclass].match_vec) * \
-                      self.item_classes[current_fixed_itemclass].profit
-        else:
-            # calculate IIS solution
-            # model.computeIIS()
-            # model.write("model.ilp")
-
+        if prerequire > len(self.item_classes[current_fixed_itemclass].items):
             return -1
+        elif remaining_capacity < 0:
+            return -1
+
+        val = self.current_value
+        remaining_items_in_class = len(self.item_classes[current_fixed_itemclass].items) - prerequire
+        while remaining_capacity > self.item_classes[current_fixed_itemclass].weight and remaining_items_in_class > 0:
+            val += self.item_classes[current_fixed_itemclass].profit
+            remaining_capacity -= self.item_classes[current_fixed_itemclass].weight
+            remaining_items_in_class -= 1
+
+        for i in range(current_fixed_itemclass + 1, len(self.item_classes)):
+            remaining_items_in_class = len(self.item_classes[i].items)
+            while remaining_capacity > self.item_classes[i].weight and remaining_items_in_class > 0:
+                val += self.item_classes[i].profit
+                remaining_capacity -= self.item_classes[i].weight
+                remaining_items_in_class -= 1
+
+        return val
 
     def _reduce_matching_by_one(self, current_itemclass: int,
                                 knapsack_to_reduce_index: int,
@@ -293,10 +242,6 @@ class TMKPA:
                 if matching.get(v, None) is None:
                     depth_first_search(v)
 
-        # this is debug code
-        assert len(matching) == sum(match_vec) * 2
-        assert len(matching) == len(nx.algorithms.bipartite.hopcroft_karp_matching(graph, items))
-
     def _adjust_matching(self, matching_save: MatchingSave, remaining_capacity: list[int]):
         """
         Adjusts matching to current remaining capacity
@@ -376,7 +321,7 @@ class TMKPA:
             current_itemclass += 1
             current_knapsack = 0
             cval_change = sum(heuristic_solution[current_itemclass].match_vec) \
-                                  * self.item_classes[current_itemclass].profit
+                          * self.item_classes[current_itemclass].profit
             self.current_value += cval_change
         else:
             current_knapsack += 1
@@ -434,7 +379,7 @@ class TMKPA:
             matchings = []
             L = 0
             for item_class in self.item_classes:
-                graph = item_class._graph.copy()
+                graph = copy_graph(item_class._graph)
                 graph.remove_nodes_from(list((i, j) for i in range(len(self.knapsacks))
                                              for j in range(remaining_capacity[i] // item_class.weight,
                                                             item_class._available_spaces[i])))

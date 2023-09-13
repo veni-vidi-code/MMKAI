@@ -10,8 +10,8 @@ from new_version.src.models.knapsack import Knapsack, Item, ItemClass
 
 import gurobipy as grb
 
-# random.seed(42)
-seed = random.randrange(sys.maxsize)
+seed = 42
+#seed = random.randrange(sys.maxsize)
 random.seed(seed)
 print(f"Seed: {seed}")
 
