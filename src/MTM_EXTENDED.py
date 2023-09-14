@@ -1,4 +1,12 @@
+"""
+Copyrigth (c) 2023 Tom Mucke
 
+The Idea of this algorithm is based on the MTM Algorithm from
+    Martello, Silvano; Toth, Paolo (1981):
+    A Bound and Bound algorithm for the zero-one multiple knapsack problem.
+    In: Discrete Applied Mathematics 3 (4), S. 275–288. DOI: 10.1016/0166-218X(81)90005-6.
+which was extended to allow for multiple knapsacks
+"""
 from src.models.knapsack import Knapsack
 from src.models.item import Item
 import gurobipy as grb
