@@ -57,9 +57,9 @@ class MTM_EXTENDED:
     def _upper_bound(self, current_knapsack) -> int:
         # Surrogate Relaxation
         if current_knapsack == -1:
-            z, _ = self._solve_single_kp(sum((k.capacity for k in self.knapsacks)), self.items)
+            z, _ = self._solve_single_kp(sum((k.capacity for k in self.knapsacks)), self.items.copy())
             return z + self.current_value
-        z, _ = self._solve_single_kp(sum((k.capacity for k in self.knapsacks[current_knapsack:])), self.items)
+        z, _ = self._solve_single_kp(sum((k.capacity for k in self.knapsacks[current_knapsack:])), self.items.copy())
         return z + self.current_value
 
     def _lower_bound(self, current_knapsack) -> (int, dict[Knapsack, list[Item]]):
