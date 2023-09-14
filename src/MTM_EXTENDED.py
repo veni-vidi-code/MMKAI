@@ -1,4 +1,4 @@
-from new_version.src.models.knapsack import Knapsack, Item
+from models.knapsack import Knapsack, Item
 import gurobipy as grb
 
 
@@ -13,26 +13,45 @@ class MTM_EXTENDED:
         self.current_value = 0
         self.current_solution = {k: set() for k in knapsacks}
         self.solved = False
+        self.all_profit_1 = True
+        for item in items:
+            if item.profit != 1:
+                self.all_profit_1 = False
 
     def _solve_single_kp(self, capacity, items: list[Item]) -> (int, set[Item]):
-        model = grb.Model()
+        if len(items) == 0:
+            return 0, set()
+        if self.all_profit_1:
+            items.sort(key=lambda x: x.weight)
+            x = set()
+            i = items.pop(0)
+            while i.weight <= capacity:
+                x.add(i)
+                capacity -= i.weight
+                if len(items) == 0:
+                    break
+                i = items.pop(0)
+            return len(x), x
 
-        # We will be maximizing
-        model.modelSense = grb.GRB.MAXIMIZE
+        else:
+            model = grb.Model()
 
-        # create variables
-        x = grb.tupledict()
-        for item in items:
-            x[item] = model.addVar(vtype=grb.GRB.BINARY,
-                                   name=f'x[{item.identifier}]',
-                                   obj=item.profit)
+            # We will be maximizing
+            model.modelSense = grb.GRB.MAXIMIZE
 
-        model.addConstr(grb.quicksum(x[item] * item.weight for item in items) <= capacity, name="knapsack capacity")
+            # create variables
+            x = grb.tupledict()
+            for item in items:
+                x[item] = model.addVar(vtype=grb.GRB.BINARY,
+                                       name=f'x[{item.identifier}]',
+                                       obj=item.profit)
 
-        model.update()
-        model.optimize()
+            model.addConstr(grb.quicksum(x[item] * item.weight for item in items) <= capacity, name="knapsack capacity")
 
-        return model.objVal, {item for item in items if x[item].X > 0.5}
+            model.update()
+            model.optimize()
+
+            return model.objVal, {item for item in items if x[item].X > 0.5}
 
     def _upper_bound(self, current_knapsack) -> int:
         # Surrogate Relaxation

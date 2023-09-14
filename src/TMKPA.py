@@ -1,10 +1,8 @@
 import collections
 
 import networkx as nx
-from gurobipy import quicksum
 
-from new_version.src.models.knapsack import Knapsack, Item, ItemClass
-import gurobipy as grb
+from models.knapsack import Knapsack, Item, ItemClass
 
 from copy import deepcopy
 
@@ -152,7 +150,7 @@ class TMKPA:
              and i[0] == knapsack_to_increase_index and i not in matching]
         checked.update(i[0] for i in stack)
         while stack:
-            x = stack.pop()  # TODO compare to dfs
+            x = stack.pop()
             vertex = x[0]
             if isinstance(vertex, Item):
                 # vertex is an item

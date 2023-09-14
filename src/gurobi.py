@@ -1,15 +1,17 @@
 from typing import Optional
 
 import gurobipy as grb
-from algorithms.models.knapsack import Knapsack, Item
+from models.knapsack import Knapsack, Item
 
 
 def solve(knapsacks: list[Knapsack], items: list[Item],
-          items_by_weight: Optional[dict[int, list[Item]]] = None) -> tuple[int, dict] | None:
+          items_by_weight: Optional[dict[int, list[Item]]] = None, *, threads=0) -> tuple[int, dict] | None:
     if len(knapsacks) == 0 or len(items) == 0:
         return 0, dict()
 
     model = grb.Model()
+    model.setParam('OutputFlag', 0)
+    model.setParam('Threads', threads)
 
     # We will be maximizing
     model.modelSense = grb.GRB.MAXIMIZE
@@ -38,7 +40,6 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
         for knapsack in (item.restrictions if item.restrictions is not None else knapsacks):
             if x[item, knapsack].X > 0.5:
                 solution[item] = knapsack
-    print([(i, i.X) for i in model.getVars()])
 
     return model.objVal, solution
 
