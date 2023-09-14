@@ -1,4 +1,5 @@
-from models.knapsack import Knapsack, Item
+from src.models.knapsack import Knapsack
+from src.models.item import Item
 import gurobipy as grb
 
 

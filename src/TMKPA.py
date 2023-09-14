@@ -2,7 +2,9 @@ import collections
 
 import networkx as nx
 
-from models.knapsack import Knapsack, Item, ItemClass
+from src.models.knapsack import Knapsack
+from src.models.item_class import ItemClass
+from src.models.item import Item
 
 from copy import deepcopy
 
@@ -157,9 +159,6 @@ class TMKPA:
                 if vertex in matching and matching[vertex] not in checked:
                     stack.append((matching[vertex], x))
                     checked.add(matching[vertex])
-                elif vertex not in matching:
-                    print(vertex, matching)
-                    raise Exception("Matching not maximal")
             else:
                 # vertex is a knapsack
                 if vertex[0] <= current_itemclass:
@@ -167,7 +166,7 @@ class TMKPA:
                     items = {i for i in graph.neighbors(vertex) if i not in checked}
                     checked.update(items)
                     stack.extend([(i, x) for i in items])
-                else:
+                elif vertex in matching:
                     # we can increase the matching
                     # construct the path
                     path = [vertex]
@@ -318,15 +317,14 @@ class TMKPA:
         if current_knapsack >= len(self.knapsacks) - 1:
             current_itemclass += 1
             current_knapsack = 0
+            if current_itemclass >= len(self.item_classes) - 1:
+                return
             cval_change = sum(heuristic_solution[current_itemclass].match_vec) \
                           * self.item_classes[current_itemclass].profit
             self.current_value += cval_change
         else:
             current_knapsack += 1
 
-        if current_itemclass >= len(self.item_classes) - 1:
-            self.current_value -= cval_change
-            return
 
         current_val = heuristic_solution[current_itemclass].match_vec[current_knapsack]
         available_spaces = heuristic_solution[current_itemclass].remaining_capacity[current_knapsack] // \

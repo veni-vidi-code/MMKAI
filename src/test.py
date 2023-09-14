@@ -5,7 +5,8 @@ import time
 from gurobi import solve
 from MTM_EXTENDED import MTM_EXTENDED
 from TMKPA import TMKPA
-from models.knapsack import Knapsack, ItemClass
+from src.models.knapsack import Knapsack
+from src.models.item_class import ItemClass
 
 import gurobipy as grb
 
@@ -66,7 +67,7 @@ if __name__ == '__main__':
     # transform gurobisol to a match_vec
     match_vec = {i: [0 for _ in range(len(knapsacks))] for i in weightclasses}
     for item, knapsack in gurobisolution.items():
-        match_vec[item.weight_class][knapsacks.index(knapsack)] += 1
+        match_vec[item.item_class][knapsacks.index(knapsack)] += 1
 
     pprint(match_vec)
 
@@ -81,7 +82,7 @@ if __name__ == '__main__':
     # create variables
     x = grb.tupledict()
     for item in items:
-        for knapsack in (item.restrictions if item.restrictions is not None else knapsacks):
+        for knapsack in item.restrictions:
             x[item, knapsack] = model.addVar(vtype=grb.GRB.BINARY,
                                              name=f'x[{item.identifier},{knapsack.identifier}]',
                                              obj=item.profit)
@@ -91,7 +92,7 @@ if __name__ == '__main__':
 
     model.addConstrs(
         (grb.quicksum(x[item, knapsack] * item.weight
-                      for item in items if item.restrictions is None or knapsack in item.restrictions)
+                      for item in items if knapsack in item.restrictions)
          <= knapsack.capacity for knapsack in knapsacks), name="knapsack capacity")
 
     model.update()

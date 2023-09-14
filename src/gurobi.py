@@ -1,7 +1,8 @@
 from typing import Optional
 
 import gurobipy as grb
-from models.knapsack import Knapsack, Item
+from src.models.knapsack import Knapsack
+from src.models.item import Item
 
 
 def solve(knapsacks: list[Knapsack], items: list[Item],
@@ -19,7 +20,7 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
     # create variables
     x = grb.tupledict()
     for item in items:
-        for knapsack in (item.restrictions if item.restrictions is not None else knapsacks):
+        for knapsack in item.restrictions:
             x[item, knapsack] = model.addVar(vtype=grb.GRB.BINARY, name=f'x[{item.identifier},{knapsack.identifier}]',
                                              obj=item.profit)
 
@@ -28,7 +29,7 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
 
     model.addConstrs(
         (grb.quicksum(x[item, knapsack] * item.weight
-                      for item in items if item.restrictions is None or knapsack in item.restrictions)
+                      for item in items if knapsack)
          <= knapsack.capacity for knapsack in knapsacks), name="knapsack capacity")
 
     model.update()
@@ -37,7 +38,7 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
 
     solution = dict()
     for item in items:
-        for knapsack in (item.restrictions if item.restrictions is not None else knapsacks):
+        for knapsack in item.restrictions:
             if x[item, knapsack].X > 0.5:
                 solution[item] = knapsack
 
