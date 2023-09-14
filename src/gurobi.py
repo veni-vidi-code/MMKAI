@@ -1,3 +1,4 @@
+# Copyright (c) 2023 Tom Mucke
 from typing import Optional
 
 import gurobipy as grb

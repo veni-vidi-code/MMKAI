@@ -1,3 +1,4 @@
+# Copyright (c) 2023 Tom Mucke
 from __future__ import annotations
 
 from itertools import count

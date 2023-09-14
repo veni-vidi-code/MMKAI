@@ -1,3 +1,4 @@
+# Copyright (c) 2023 Tom Mucke
 from src.MTM_EXTENDED import MTM_EXTENDED
 from unit_tests.TMKPA.solving import TestTMKPAsolve
 

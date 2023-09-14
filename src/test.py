@@ -1,3 +1,4 @@
+# Copyright (c) 2023 Tom Mucke
 import random
 import sys
 import time

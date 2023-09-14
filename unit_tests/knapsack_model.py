@@ -1,3 +1,4 @@
+# Copyright (c) 2023 Tom Mucke
 import unittest
 
 from src.models.knapsack import Knapsack

@@ -1,3 +1,4 @@
+# Copyright (c) 2023 Tom Mucke
 from itertools import count
 
 from typing import TYPE_CHECKING

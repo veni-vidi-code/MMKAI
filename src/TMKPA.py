@@ -1,3 +1,5 @@
+# Copyright (c) 2023 Tom Mucke
+
 import collections
 
 import networkx as nx
