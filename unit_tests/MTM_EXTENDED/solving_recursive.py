@@ -1,9 +1,9 @@
 # Copyright (c) 2023 Tom Mucke
 from src.MTM_EXTENDED_recursive import MTM_EXTENDED_recursive
-from unit_tests.TMKPA.solving import TestTMKPAsolve
+from unit_tests.TMKPA_recursive.solving_recursive import TestTMKPA_solve_recursive
 
 
-class TestMTM_Extende_solve(TestTMKPAsolve):
+class TestMTM_Extended_solve_recursive(TestTMKPA_solve_recursive):
     def setUp(self) -> None:
         self.class_to_test = lambda weightclasses, knapsacks, items: MTM_EXTENDED_recursive(items, knapsacks)
 

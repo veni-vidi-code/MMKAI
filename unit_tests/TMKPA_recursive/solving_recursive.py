@@ -2,7 +2,7 @@
 import unittest
 import random
 
-from src.TMKPA import *
+from src.TMKPA_recursive import *
 import gurobipy as grb
 
 
@@ -47,10 +47,10 @@ def validate_solution(knapsacks, items, sol):
             return model.objVal, model.status
 
 
-class TestTMKPAsolve(unittest.TestCase):
+class TestTMKPA_solve_recursive(unittest.TestCase):
     # this class will test using some harcoded values aswell as some random values
     def setUp(self) -> None:
-        self.class_to_test = lambda weightclasses, knapsacks, items: TMKPA(weightclasses, knapsacks, items)
+        self.class_to_test = lambda weightclasses, knapsacks, items: TMKPA_recursive(weightclasses, knapsacks, items)
 
     def test_random_42(self):
         random.seed(42)

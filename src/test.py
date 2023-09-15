@@ -5,21 +5,22 @@ import time
 
 from gurobi import solve
 from MTM_EXTENDED_recursive import MTM_EXTENDED_recursive
-from TMKPA import TMKPA
+from TMKPA_recursive import TMKPA_recursive
+from src.MTM_EXTENDED_iterative import MTM_EXTENDED_iterative
+from src.TMKPA_iterative import TMKPA_iterative
 from src.models.knapsack import Knapsack
 from src.models.item_class import ItemClass
 
 import gurobipy as grb
 
-# seed = 42
 seed = random.randrange(sys.maxsize)
-seed = 6356047173338267795
+# seed = 42
 random.seed(seed)
 print(f"Seed: {seed}")
 
 topend = 10_000
 
-numer_of_knapsacks = 2
+numer_of_knapsacks = 5
 print(f"Number of knapsacks: {numer_of_knapsacks}")
 
 knapsacks = [Knapsack(random.randint(1, topend * 10)) for _ in range(numer_of_knapsacks)]
@@ -40,13 +41,22 @@ if __name__ == '__main__':
     print("Solving...")
 
     class_to_use = input("Class to use (1) TMKPA, (2) MTM_EXTENDED: ")
-    # class_to_use = "1"
-    if "1" in class_to_use or "TMKPA" in class_to_use:
-        solver = TMKPA(weightclasses, knapsacks, items)
-    elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
-        solver = MTM_EXTENDED_recursive(items, knapsacks)
+    iterative = input("Iterative? (y/n): ")
+    if iterative in ["y", "Y", "j", "J", "yes", "Yes", "YES", "1", "Ja", "ja", "JA"] or bool(iterative):
+        if "1" in class_to_use or "TMKPA" in class_to_use:
+            solver = TMKPA_iterative(weightclasses, knapsacks, items)
+        elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
+            solver = MTM_EXTENDED_iterative(items, knapsacks)
+        else:
+            raise Exception("Wrong class")
     else:
-        raise Exception("Wrong class")
+        if "1" in class_to_use or "TMKPA" in class_to_use:
+            solver = TMKPA_recursive(weightclasses, knapsacks, items)
+        elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
+            solver = MTM_EXTENDED_recursive(items, knapsacks)
+        else:
+            raise Exception("Wrong class")
+
     start = time.time()
     val, sol = solver.solve()
     end = time.time()

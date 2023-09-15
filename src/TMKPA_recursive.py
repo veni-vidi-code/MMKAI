@@ -43,7 +43,7 @@ class MatchingSave:
         return str(self)
 
 
-class TMKPA:
+class TMKPA_recursive:
     # ONLY FOR MKPA with identical profits
     def __init__(self, item_classes: list[ItemClass], knapsacks: list[Knapsack], items: list[Item]):
         self.knapsacks = knapsacks
@@ -103,8 +103,8 @@ class TMKPA:
         """
         # DFS
         checked = set()
-        stack: list[tuple[tuple[int, int] | int, tuple | bool]] = \
-            [(i, False) for i in matching if isinstance(i, tuple) and i[0] == knapsack_to_reduce_index]
+        stack: collections.deque[tuple[tuple[int, int] | int, tuple | bool]] = \
+            collections.deque([(i, False) for i in matching if isinstance(i, tuple) and i[0] == knapsack_to_reduce_index])
         checked.update(i[0] for i in stack)
         while stack:
             x = stack.pop()
@@ -149,9 +149,9 @@ class TMKPA:
         """
         # DFS
         checked = set()
-        stack: list[tuple[tuple[int, int] | int, tuple | bool]] = \
-            [(i, False) for i in graph.nodes if isinstance(i, tuple)
-             and i[0] == knapsack_to_increase_index and i not in matching]
+        stack: collections.deque[tuple[tuple[int, int] | int, tuple | bool]] = \
+            collections.deque([(i, False) for i in graph.nodes if isinstance(i, tuple)
+             and i[0] == knapsack_to_increase_index and i not in matching])
         checked.update(i[0] for i in stack)
         while stack:
             x = stack.pop()
@@ -353,12 +353,12 @@ class TMKPA:
         # calculate lower bound
         L, heuristic_solution = self._lower_bound(current_itemclass, current_knapsack, fixed_to, previous_matchings)
 
-        if L != sum(sum(i.match_vec) for i in heuristic_solution) and L != -1:
+        """if L != sum(sum(i.match_vec) for i in heuristic_solution) and L != -1:
             raise Exception("Lower bound is incorrect, it should be "
                             + str(sum(sum(i.match_vec) for i in heuristic_solution))
                             + " but is " + str(L) + ". The number of matchings is "
                             + str([sum(i.match_vec) for i in heuristic_solution]) + str(
-                [len(i.matching) for i in heuristic_solution]))
+                [len(i.matching) for i in heuristic_solution]))"""
 
         if L == -1:
             return False

@@ -6,8 +6,8 @@ import sys
 import time
 
 from runtime_tester.Testrecord import Testrecord
-from src.MTM_EXTENDED_recursive import MTM_EXTENDED_recursive
-from src.TMKPA import TMKPA
+from src.MTM_EXTENDED_iterative import MTM_EXTENDED_iterative
+from src.TMKPA_iterative import TMKPA_iterative
 from src.models.knapsack import Knapsack
 from src.models.item_class import ItemClass
 
@@ -67,8 +67,8 @@ def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses
 
     print(f"Seed: {seed}")
 
-    tmkpa = TMKPA(weightclasses_1, knapsacks_1, items_1)
-    mtm_extended = MTM_EXTENDED_recursive(items_2, knapsacks_2)
+    tmkpa = TMKPA_iterative(weightclasses_1, knapsacks_1, items_1)
+    mtm_extended = MTM_EXTENDED_iterative(items_2, knapsacks_2)
     tmkpa_time = None
     tmkpa_cpu_time = None
     mtm_extended_time = None
@@ -111,9 +111,9 @@ def perform_multiple_tests_json(x, base_dir="./test_results"):
     try:
         with open(filename, "w+") as f:
             f.write("[")
-            for number_of_weightclasses in range(1, 11):
-                for number_of_knapsacks in range(1, 11):
-                    for number_of_items_exp in range(7):
+            for number_of_weightclasses in range(1, 6):
+                for number_of_knapsacks in range(1, 6):
+                    for number_of_items_exp in range(6):
                         number_of_items = 10 ** number_of_items_exp
                         max_capacity = 100_000
                         min_capacity = 1
@@ -124,8 +124,9 @@ def perform_multiple_tests_json(x, base_dir="./test_results"):
                         print(f"Number of knapsacks: {number_of_knapsacks}\nNumber of items: {number_of_items:_}\n"
                               f"Number of weight classes: {number_of_weightclasses}")
                         results = performe_x_tests(number_of_knapsacks, number_of_items, number_of_weightclasses,
-                                             min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
-                                             knapsacks_per_item_max, x)
+                                                   min_weight, max_weight, min_capacity, max_capacity,
+                                                   knapsacks_per_item_min,
+                                                   knapsacks_per_item_max, x)
                         json.dump(results, f)
                         f.write(",")
 
@@ -137,12 +138,6 @@ def perform_multiple_tests_json(x, base_dir="./test_results"):
         with open(filename, "a") as f:
             f.write("]")
 
-def perform_multiple_tests_sql(x, ):
-    ...
-
 
 if __name__ == '__main__':
-    results = performe_x_tests(number_of_knapsacks, number_of_items, number_of_weightclasses,
-                               min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
-                               knapsacks_per_item_max, 3)
-    #perform_multiple_tests_json(10)
+    perform_multiple_tests_json(10)
