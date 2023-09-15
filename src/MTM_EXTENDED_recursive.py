@@ -12,7 +12,7 @@ from src.models.item import Item
 import gurobipy as grb
 
 
-class MTM_EXTENDED:
+class MTM_EXTENDED_recursive:
     def __init__(self, items: list[Item], knapsacks: list[Knapsack]):
         self.best_solution_value = -1
         self.best_solution = {}

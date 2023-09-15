@@ -4,7 +4,7 @@ import sys
 import time
 
 from gurobi import solve
-from MTM_EXTENDED import MTM_EXTENDED
+from MTM_EXTENDED_recursive import MTM_EXTENDED_recursive
 from TMKPA import TMKPA
 from src.models.knapsack import Knapsack
 from src.models.item_class import ItemClass
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     if "1" in class_to_use or "TMKPA" in class_to_use:
         solver = TMKPA(weightclasses, knapsacks, items)
     elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
-        solver = MTM_EXTENDED(items, knapsacks)
+        solver = MTM_EXTENDED_recursive(items, knapsacks)
     else:
         raise Exception("Wrong class")
     start = time.time()
