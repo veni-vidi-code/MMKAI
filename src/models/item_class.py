@@ -61,6 +61,12 @@ class ItemClass(object):
 
     def prepare(self, knapsacks: list[Knapsack]):
         self._available_spaces = [min(k.capacity // self._weight, len(self.items)) for k in knapsacks]
-        self._graph = nx.Graph(
-            {(i, j): tuple(item for item in self._items if knapsack in item.restrictions)
-             for i, knapsack in enumerate(knapsacks) for j in range(self._available_spaces[i])})
+        k = {(i, j): tuple(item for item in self._items if knapsack in item.restrictions)
+             for i, knapsack in enumerate(knapsacks) for j in range(self._available_spaces[i])}
+        self._graph = nx.Graph(k)
+        j = self.items.copy()
+        for i in k.values():
+            j -= set(i)
+
+        for item in j:
+            self._graph.add_node(item)

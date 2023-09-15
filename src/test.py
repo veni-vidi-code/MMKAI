@@ -13,6 +13,7 @@ import gurobipy as grb
 
 # seed = 42
 seed = random.randrange(sys.maxsize)
+seed = 6356047173338267795
 random.seed(seed)
 print(f"Seed: {seed}")
 

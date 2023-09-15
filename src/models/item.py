@@ -5,6 +5,8 @@ from itertools import count
 
 from typing import TYPE_CHECKING
 
+import warnings
+
 if TYPE_CHECKING:
     from src.models.knapsack import Knapsack
     from src.models.item_class import ItemClass
@@ -24,7 +26,11 @@ class Item:
         self._item_class = item_class
         self._item_class.items.add(self)
         for knapsack in restrictions:
-            knapsack.eligible_items.add(self)
+            if knapsack.capacity < weight:
+                warnings.warn(f"Knapsack capacity too small for item {self}, removing knapsack {knapsack} from "
+                              f"restrictions")
+            else:
+                knapsack.eligible_items.add(self)
 
     def __str__(self):
         return f'Item {self._identifier} ({self.profit}, {self.weight})'
