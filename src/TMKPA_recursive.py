@@ -353,12 +353,10 @@ class TMKPA_recursive:
         # calculate lower bound
         L, heuristic_solution = self._lower_bound(current_itemclass, current_knapsack, fixed_to, previous_matchings)
 
-        """if L != sum(sum(i.match_vec) for i in heuristic_solution) and L != -1:
-            raise Exception("Lower bound is incorrect, it should be "
-                            + str(sum(sum(i.match_vec) for i in heuristic_solution))
-                            + " but is " + str(L) + ". The number of matchings is "
-                            + str([sum(i.match_vec) for i in heuristic_solution]) + str(
-                [len(i.matching) for i in heuristic_solution]))"""
+        assert L == sum(sum(i.match_vec) for i in heuristic_solution) or L == -1, \
+            f"Lower bound is incorrect, it should be {sum(sum(i.match_vec) for i in heuristic_solution)} " \
+            f"but is {L}. The number of matchings is {[sum(i.match_vec) for i in heuristic_solution]} " \
+            f"{[len(i.matching) for i in heuristic_solution]}"
 
         if L == -1:
             return False

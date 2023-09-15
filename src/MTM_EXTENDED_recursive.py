@@ -13,7 +13,7 @@ import gurobipy as grb
 
 
 class MTM_EXTENDED_recursive:
-    def __init__(self, items: list[Item], knapsacks: list[Knapsack]):
+    def __init__(self, item_classes, knapsacks: list[Knapsack], items: list[Item]):
         self.best_solution_value = -1
         self.best_solution = {}
         self.items = items

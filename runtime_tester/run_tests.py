@@ -1,5 +1,8 @@
 # Copyright (c) 2023 Tom Mucke
+
+# Always run with -OO flag to improve performance
 import json
+import multiprocessing
 import os
 import random
 import sys
@@ -12,6 +15,11 @@ from src.models.knapsack import Knapsack
 from src.models.item_class import ItemClass
 
 import timeit
+
+
+class Dummy_Value:
+    def __init__(self):
+        self.value = -1
 
 
 def create_testinstance(number_of_knapsacks, number_of_items, number_of_weightclasses,
@@ -49,44 +57,84 @@ def create_testinstance(number_of_knapsacks, number_of_items, number_of_weightcl
     return knapsacks, items, weightclasses, seed
 
 
-def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses,
+def timeit_wrapper(instance, cpu_time: bool, result_value, number_of_knapsacks, number_of_items,
+                   number_of_weightclasses,
                    min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
                    knapsacks_per_item_max, seed):
+    knapsacks, items, item_classes, seed = create_testinstance(number_of_knapsacks, number_of_items,
+                                                               number_of_weightclasses,
+                                                               min_weight, max_weight, min_capacity,
+                                                               max_capacity, knapsacks_per_item_min,
+                                                               knapsacks_per_item_max, seed)
+
+    instance = instance(knapsacks=knapsacks, items=items, item_classes=item_classes)
+
+    try:
+        if cpu_time:
+            result_value.value = timeit.timeit(instance.solve, number=1, timer=time.process_time)
+        else:
+            result_value.value = timeit.timeit(instance.solve, number=1, timer=timeit.default_timer)
+    except SystemExit:
+        pass  # timeouts are handled by the main process
+    except Exception as e:
+        print(f"{e}")
+
+
+def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses,
+                   min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
+                   knapsacks_per_item_max, seed, max_time=60 * 10):
+    if seed is None:
+        seed = random.randrange(sys.maxsize)
+
     print(f"Number of knapsacks: {number_of_knapsacks}\nNumber of items: {number_of_items}\n"
           f"Number of weight classes: {number_of_weightclasses}")
-    knapsacks_1, items_1, weightclasses_1, seed = create_testinstance(number_of_knapsacks, number_of_items,
-                                                                      number_of_weightclasses,
-                                                                      min_weight, max_weight, min_capacity,
-                                                                      max_capacity, knapsacks_per_item_min,
-                                                                      knapsacks_per_item_max, seed)
-    knapsacks_2, items_2, weightclasses_2, _ = create_testinstance(number_of_knapsacks, number_of_items,
-                                                                   number_of_weightclasses,
-                                                                   min_weight, max_weight, min_capacity, max_capacity,
-                                                                   knapsacks_per_item_min,
-                                                                   knapsacks_per_item_max, seed)
+
+    required_create_time = timeit.timeit(lambda: create_testinstance(number_of_knapsacks, number_of_items,
+                                                                     number_of_weightclasses,
+                                                                     min_weight, max_weight, min_capacity,
+                                                                     max_capacity, knapsacks_per_item_min,
+                                                                     knapsacks_per_item_max, seed), number=1)
+    print(f"Required time to create test instance: {required_create_time}")
 
     print(f"Seed: {seed}")
 
-    tmkpa = TMKPA_iterative(weightclasses_1, knapsacks_1, items_1)
-    mtm_extended = MTM_EXTENDED_iterative(items_2, knapsacks_2)
-    tmkpa_time = None
-    tmkpa_cpu_time = None
-    mtm_extended_time = None
-    mtm_extended_cpu_time = None
+    times = [multiprocessing.Value("d", -1) for _ in range(4)]
 
-    try:
-        tmkpa_time = timeit.timeit(lambda: tmkpa.solve(), number=1, timer=timeit.default_timer)
-        tmkpa_cpu_time = timeit.timeit(lambda: tmkpa.solve(), number=1, timer=time.process_time)
-        print(f"TMKPA: {tmkpa_time} seconds")
-    except Exception as e:
-        print(f"TMKPA: {e}")
+    p = []
 
-    try:
-        mtm_extended_time = timeit.timeit(lambda: mtm_extended.solve(), number=1, timer=timeit.default_timer)
-        mtm_extended_cpu_time = timeit.timeit(lambda: mtm_extended.solve(), number=1, timer=time.process_time)
-        print(f"MTM_EXTENDED: {mtm_extended_time} seconds")
-    except Exception as e:
-        print(f"MTM_EXTENDED: {e}")
+    for i, instance in enumerate([(TMKPA_iterative, False), (TMKPA_iterative, True),
+                                  (MTM_EXTENDED_iterative, False), (MTM_EXTENDED_iterative, True)]):
+        p.append(multiprocessing.Process(target=timeit_wrapper, args=(
+            instance[0], instance[1], times[i], number_of_knapsacks, number_of_items, number_of_weightclasses,
+            min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
+            knapsacks_per_item_max, seed)))
+
+    for x in p:
+        x.start()
+
+    start_time = timeit.default_timer()
+    while any(x.is_alive() for x in p) and timeit.default_timer() - start_time < max_time:
+        time.sleep(1)
+
+    for i, x in enumerate(p):
+        if x.is_alive():
+            x.terminate()
+            times[i] = Dummy_Value()
+            # The following is colored for better readability
+            print("\033[94m" + f"Process {i} timed out" + "\033[0m")
+
+    for i, x in enumerate(p):
+        x.join()
+
+    tmkpa_time = times[0].value
+    tmkpa_cpu_time = times[1].value
+    mtm_extended_time = times[2].value
+    mtm_extended_cpu_time = times[3].value
+
+    print(f"Required time to solve TMKPA: {tmkpa_time}")
+    print(f"Required time to solve TMKPA (CPU time): {tmkpa_cpu_time}")
+    print(f"Required time to solve MTM_EXTENDED: {mtm_extended_time}")
+    print(f"Required time to solve MTM_EXTENDED (CPU time): {mtm_extended_cpu_time}")
 
     return Testrecord(number_of_knapsacks=number_of_knapsacks, number_of_items=number_of_items,
                       number_of_weightclasses=number_of_weightclasses, min_weight=min_weight, max_weight=max_weight,
