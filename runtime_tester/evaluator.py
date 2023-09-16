@@ -7,6 +7,8 @@ from runtime_tester.Testrecord import Testrecord
 
 import pandas as pd
 
+minimum_number_of_items = 1000
+minimum_number_of_knapsacks = 2
 
 def get_tests(base_dir="./test_results"):
     for filename in os.listdir(base_dir):
@@ -26,6 +28,12 @@ def get_average_times_for_variables():
     results_tmkpa: dict[tuple[int, int, int], tuple[float, int, int]] = {}
     results_mtm_extended: dict[tuple[int, int, int], tuple[float, int, int]] = {}
     for test in get_tests():
+        if test["number_of_items"] < minimum_number_of_items:
+            continue
+
+        if test["number_of_knapsacks"] < minimum_number_of_knapsacks:
+            continue
+
         key = (test["number_of_knapsacks"], test["number_of_weightclasses"], test["number_of_items"])
 
         if "required_time_tmkpa" in test:
@@ -86,7 +94,7 @@ def write_df_to_latex(df, filename):
 
 
     with open(filename, "w") as f:
-        f.write(style.to_latex(environment="longtable"))
+        f.write(style.to_latex(environment="longtable", hrules=True, clines="skip-last;data"))
 
 
 if __name__ == "__main__":
