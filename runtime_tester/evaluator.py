@@ -17,7 +17,7 @@ Processor	12th Gen Intel(R) Core(TM) i7-12700   2.10 GHz
 RAM	32,0 GB (31,7 GB usable)
 Systemtype	64-Bit, x64 Processor
 
-Python 3.10.7 from python.org
+Python 3.10.7 from python.org using a venv
 attrs==22.1.0
 gurobipy==9.5.2
 gurobipy-stubs==1.0.1
