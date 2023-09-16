@@ -82,7 +82,7 @@ def timeit_wrapper(instance, cpu_time: bool, result_value, number_of_knapsacks, 
 
 def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses,
                    min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
-                   knapsacks_per_item_max, seed, max_time=60 * 10):
+                   knapsacks_per_item_max, seed, max_time=60 * 3):
     if seed is None:
         seed = random.randrange(sys.maxsize)
 
