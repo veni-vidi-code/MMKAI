@@ -1,5 +1,44 @@
 # Copyright (c) 2023 Tom Mucke
 
+"""
+Test results are stored in the folder test_results. This script evaluates the results and creates a latex table
+containing the average runtime for each combination of variables. The table is written to the files tmkpa.tex and
+mtm_extended.tex.
+
+Always delete the results of the first test run to ensure that the results are not influenced by warmup.
+
+The provided test results were run under the following conditions:
+Edition	Windows 11 Pro
+Version	22H2
+OS Build	22621.2283
+Performace	Windows Feature Experience Pack 1000.22662.1000.0
+
+Processor	12th Gen Intel(R) Core(TM) i7-12700   2.10 GHz
+RAM	32,0 GB (31,7 GB usable)
+Systemtype	64-Bit, x64 Processor
+
+Python 3.10.7 from python.org
+attrs==22.1.0
+gurobipy==9.5.2
+gurobipy-stubs==1.0.1
+networkx==3.1
+numpy==1.23.4
+pandas==1.5.0
+
+PYTHONUNBUFFERED=1
+Flag -OO set
+
+Run from
+PyCharm 2023.1.4 (Professional Edition)
+Build #PY-231.9225.15
+Runtime version: 17.0.7+10-b829.16 amd64
+VM: OpenJDK 64-Bit Server VM by JetBrains s.r.o.
+Windows 11.0
+GC: G1 Young Generation, G1 Old Generation
+Memory: 2048M
+Cores: 20
+"""
+
 import json
 import os
 
