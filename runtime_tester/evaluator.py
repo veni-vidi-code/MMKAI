@@ -49,6 +49,7 @@ import pandas as pd
 minimum_number_of_items = 1000
 minimum_number_of_knapsacks = 2
 
+
 def get_tests(base_dir="./test_results"):
     for filename in os.listdir(base_dir):
         with open(f"{base_dir}/{filename}", "r") as f:
@@ -98,10 +99,16 @@ def get_average_times_for_variables():
         if results_tmkpa[key][2] != 0:
             results_tmkpa[key] = (results_tmkpa[key][0] / results_tmkpa[key][2],
                                   results_tmkpa[key][1], results_tmkpa[key][2])
+        else:
+            results_tmkpa[key] = (-1,
+                                  results_tmkpa[key][1], results_tmkpa[key][2])
 
     for key in results_mtm_extended.keys():
         if results_mtm_extended[key][2] != 0:
             results_mtm_extended[key] = (results_mtm_extended[key][0] / results_mtm_extended[key][2],
+                                         results_mtm_extended[key][1], results_mtm_extended[key][2])
+        else:
+            results_mtm_extended[key] = (-1,
                                          results_mtm_extended[key][1], results_mtm_extended[key][2])
 
     return results_tmkpa, results_mtm_extended
@@ -128,9 +135,14 @@ def write_df_to_latex(df, filename):
     style = df.style
     style.format('\\num{{{:n}}}', "Anzahl Timeouts")
     style.format('\\num{{{:n}}}', "Erfolgreiche Tests")
-    style.format(lambda x: '\\qty{{{:.2E}}}{{\\second}}'.format(x).replace(".", ","), "Durchschnittliche Laufzeit")
-    style.format_index(lambda x: '\\num{{{:_}}}'.format(x).replace(".", ",").replace("_", "."))
 
+    def format_time(x):
+        if x == -1:
+            return "-"
+        return "\\qty{{{:.2f}}}{{\\second}}".format(x).replace(".", ",")
+
+    style.format(format_time, "Durchschnittliche Laufzeit")
+    style.format_index(lambda x: '\\num{{{:_}}}'.format(x).replace(".", ",").replace("_", "."))
 
     with open(filename, "w") as f:
         f.write(style.to_latex(environment="longtable", hrules=True, clines="skip-last;data"))
