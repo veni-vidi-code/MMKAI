@@ -25,7 +25,7 @@ networkx==3.1
 numpy==1.23.4
 pandas==1.5.0
 
-PYTHONUNBUFFERED=1
+Flag -u set
 Flag -OO set
 
 Run from
