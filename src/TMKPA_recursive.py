@@ -345,7 +345,7 @@ class TMKPA_recursive:
     def _bound(self, current_itemclass: int, current_knapsack: int, fixed_to: int,
                previous_matchings: list[MatchingSave]):
         # calculate upper bound
-        U = self._upper_bound(current_itemclass, current_knapsack, fixed_to, previous_matchings)
+        U = self._upper_bound(current_itemclass, current_knapsack, fixed_to, previous_matchings) # in theorey this does not need to be done for every fixed_to
 
         if U == -1:
             return False
