@@ -10,7 +10,7 @@ import time
 
 from runtime_tester.Testrecord import Testrecord
 from src.MTM_EXTENDED_iterative import MTM_EXTENDED_iterative
-from src.TMKPA_iterative import TMKPA_iterative
+from src.TMKPA_recursive import TMKPA_recursive
 from src.models.knapsack import Knapsack
 from src.models.item_class import ItemClass
 
@@ -95,6 +95,7 @@ def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses
                                                                      max_capacity, knapsacks_per_item_min,
                                                                      knapsacks_per_item_max, seed), number=1)
     print(f"Required time to create test instance: {required_create_time}")
+    max_time += required_create_time * 2
 
     print(f"Seed: {seed}")
 
@@ -102,7 +103,7 @@ def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses
 
     p = []
 
-    for i, instance in enumerate([(TMKPA_iterative, False), (TMKPA_iterative, True),
+    for i, instance in enumerate([(TMKPA_recursive, False), (TMKPA_recursive, True),
                                   (MTM_EXTENDED_iterative, False), (MTM_EXTENDED_iterative, True)]):
         p.append(multiprocessing.Process(target=timeit_wrapper, args=(
             instance[0], instance[1], times[i], number_of_knapsacks, number_of_items, number_of_weightclasses,
@@ -113,6 +114,7 @@ def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses
         x.start()
 
     start_time = timeit.default_timer()
+    p[0].join(max_time)
     while any(x.is_alive() for x in p) and timeit.default_timer() - start_time < max_time:
         time.sleep(1)
 
@@ -159,9 +161,9 @@ def perform_multiple_tests_json(x, base_dir="./test_results"):
     try:
         with open(filename, "w+") as f:
             f.write("[")
-            for number_of_weightclasses in range(1, 6):
-                for number_of_knapsacks in range(1, 6):
-                    for number_of_items_exp in range(6):
+            for number_of_weightclasses in [1, 2, 5, 10, 20, 40, 60, 100]:
+                for number_of_knapsacks in [2, 3, 4, 5, 10, 31, 50, 100, 183]:
+                    for number_of_items_exp in range(3,6):
                         number_of_items = 10 ** number_of_items_exp
                         max_capacity = 100_000
                         min_capacity = 1

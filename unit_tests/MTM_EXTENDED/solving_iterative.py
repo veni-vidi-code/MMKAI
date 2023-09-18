@@ -5,4 +5,6 @@ from unit_tests.MTM_EXTENDED.solving_recursive import TestMTM_Extended_solve_rec
 
 class TestMTM_Extendes_solve_iterative(TestMTM_Extended_solve_recursive):
     def setUp(self) -> None:
-        self.class_to_test = lambda weightclasses, knapsacks, items: MTM_EXTENDED_iterative(items, knapsacks)
+        self.class_to_test = lambda weightclasses, knapsacks, items: MTM_EXTENDED_iterative(item_classes=weightclasses,
+                                                                                           knapsacks=knapsacks,
+                                                                                           items=items)

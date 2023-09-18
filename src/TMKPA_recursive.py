@@ -65,10 +65,10 @@ class TMKPA_recursive:
 
         self.solved = False
 
-    def _upper_bound(self, current_fixed_itemclass, current_fixed_knapsack, fixed_to, previous_matchings) -> int:
+    def _upper_bound(self, current_fixed_itemclass, previous_matchings) -> int:
 
         prerequire = sum(previous_matchings[current_fixed_itemclass].match_vec[knapsack] for knapsack in
-                         range(current_fixed_knapsack)) + fixed_to
+                         range(len(self.knapsacks)))
 
         remaining_capacity = sum(previous_matchings[current_fixed_itemclass].remaining_capacity) - prerequire * \
                                 self.item_classes[current_fixed_itemclass].weight
@@ -79,11 +79,7 @@ class TMKPA_recursive:
             return -1
 
         val = self.current_value
-        remaining_items_in_class = len(self.item_classes[current_fixed_itemclass].items) - prerequire
-        while remaining_capacity > self.item_classes[current_fixed_itemclass].weight and remaining_items_in_class > 0:
-            val += self.item_classes[current_fixed_itemclass].profit
-            remaining_capacity -= self.item_classes[current_fixed_itemclass].weight
-            remaining_items_in_class -= 1
+
 
         for i in range(current_fixed_itemclass + 1, len(self.item_classes)):
             remaining_items_in_class = len(self.item_classes[i].items)
@@ -345,7 +341,7 @@ class TMKPA_recursive:
     def _bound(self, current_itemclass: int, current_knapsack: int, fixed_to: int,
                previous_matchings: list[MatchingSave]):
         # calculate upper bound
-        U = self._upper_bound(current_itemclass, current_knapsack, fixed_to, previous_matchings) # in theorey this does not need to be done for every fixed_to
+        U = self._upper_bound(current_itemclass, previous_matchings) # in theorey this does not need to be done for every fixed_to
 
         if U == -1:
             return False

@@ -5,10 +5,11 @@ from unit_tests.TMKPA_recursive.solving_recursive import TestTMKPA_solve_recursi
 
 class TestMTM_Extended_solve_recursive(TestTMKPA_solve_recursive):
     def setUp(self) -> None:
-        self.class_to_test = lambda weightclasses, knapsacks, items: MTM_EXTENDED_recursive(items, knapsacks)
+        self.class_to_test = lambda weightclasses, knapsacks, items: MTM_EXTENDED_recursive(items=items,
+                                                                                            knapsacks=knapsacks,
+                                                                                            item_classes=weightclasses)
 
     def test_manual_5(self):
         ...
 
     # TODO add tests where p != 1
-

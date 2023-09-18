@@ -156,3 +156,19 @@ class TestTMKPA_solve_recursive(unittest.TestCase):
         gurobisol, gurobisolution = validate_solution(knapsacks, items, sol)
         self.assertEqual(gurobisolution, grb.GRB.Status.OPTIMAL)
         self.assertEqual(gurobisol, val)
+
+    def test_manual_7(self):
+        knapsacks = [Knapsack(2), Knapsack(2)]
+        weightclasses = [ItemClass(1, 1), ItemClass(1, 2)]
+        items = [weightclasses[0].add_item(set(knapsacks)) for _ in range(2)]
+        items.append(weightclasses[1].add_item({knapsacks[0]}))
+
+        solver = self.class_to_test(weightclasses, knapsacks, items)
+        val, sol = solver.solve()
+        self.assertEqual(val, 3)
+
+        # validate solution using gurobi
+        gurobisol, gurobisolution = validate_solution(knapsacks, items, sol)
+        self.assertEqual(gurobisolution, grb.GRB.Status.OPTIMAL)
+        self.assertEqual(gurobisol, val)
+
