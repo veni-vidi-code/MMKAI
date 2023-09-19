@@ -7,13 +7,17 @@ from src.models.item import Item
 
 
 def solve(knapsacks: list[Knapsack], items: list[Item],
-          items_by_weight: Optional[dict[int, list[Item]]] = None, *, threads=0) -> tuple[int, dict] | None:
+          items_by_weight: Optional[dict[int, list[Item]]] = None, *, threads=0,
+          timelimit: None | int = None) -> tuple[int, dict] | None:
     if len(knapsacks) == 0 or len(items) == 0:
         return 0, dict()
 
     model = grb.Model()
     model.setParam('OutputFlag', 0)
     model.setParam('Threads', threads)
+
+    if timelimit is not None:
+        model.setParam('TimeLimit', timelimit)
 
     # We will be maximizing
     model.modelSense = grb.GRB.MAXIMIZE
@@ -30,7 +34,7 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
 
     model.addConstrs(
         (grb.quicksum(x[item, knapsack] * item.weight
-                      for item in items if knapsack)
+                      for item in items if knapsack in item.restrictions)
          <= knapsack.capacity for knapsack in knapsacks), name="knapsack capacity")
 
     model.update()
@@ -42,6 +46,9 @@ def solve(knapsacks: list[Knapsack], items: list[Item],
         for knapsack in item.restrictions:
             if x[item, knapsack].X > 0.5:
                 solution[item] = knapsack
+
+    if timelimit is not None and model.status == grb.GRB.TIME_LIMIT:
+        return -1, solution
 
     return model.objVal, solution
 

@@ -19,14 +19,13 @@ Systemtype	64-Bit, x64 Processor
 
 Python 3.10.7 from python.org using a venv
 attrs==22.1.0
-gurobipy==9.5.2
+gurobipy==10.0.3
 gurobipy-stubs==1.0.1
 networkx==3.1
 numpy==1.23.4
 pandas==1.5.0
 
 Flag -u set
-Flag -OO set
 
 Run from
 PyCharm 2023.1.4 (Professional Edition)

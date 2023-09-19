@@ -9,6 +9,7 @@ import sys
 import time
 
 from runtime_tester.Testrecord import Testrecord
+from src import gurobi
 from src.MTM_EXTENDED_iterative import MTM_EXTENDED_iterative
 from src.TMKPA_recursive import TMKPA_recursive
 from src.models.knapsack import Knapsack
@@ -164,7 +165,7 @@ def perform_multiple_tests_json(x, base_dir="./test_results"):
             f.write("[")
             for number_of_weightclasses in [1, 2, 5, 10, 20, 40, 60, 100]:
                 for number_of_knapsacks in [2, 3, 4, 5, 10, 31, 50, 100, 183]:
-                    for number_of_items_exp in range(3,6):
+                    for number_of_items_exp in range(3, 6):
                         number_of_items = 10 ** number_of_items_exp
                         max_capacity = 100_000
                         min_capacity = 1
@@ -190,5 +191,106 @@ def perform_multiple_tests_json(x, base_dir="./test_results"):
             f.write("]")
 
 
+def _test_tmkpa_wrapper(result_value, number_of_knapsacks, number_of_items,
+                        number_of_weightclasses,
+                        min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
+                        knapsacks_per_item_max, seed):
+    knapsacks, items, item_classes, seed = create_testinstance(number_of_knapsacks, number_of_items,
+                                                               number_of_weightclasses,
+                                                               min_weight, max_weight, min_capacity,
+                                                               max_capacity, knapsacks_per_item_min,
+                                                               knapsacks_per_item_max, seed)
+    instance = TMKPA_recursive(knapsacks=knapsacks, items=items, item_classes=item_classes)
+    result_value.value = timeit.timeit(instance.solve, number=1, timer=timeit.default_timer)
+    print(f"Finished {instance.__class__.__name__}")  # this will print to stdout, even with it overwritten due to
+    # beeing called through multiprocessing
+
+
+class Dummy_Buffer:
+    def write(self, *args, **kwargs):
+        pass
+
+    def flush(self, *args, **kwargs):
+        pass
+
+
+def run_against_gurobi(number_of_knapsacks, number_of_items, number_of_weightclasses,
+                       min_weight=1, max_weight=10_000, min_capacity=1, max_capacity=100_000, knapsacks_per_item_min=1,
+                       knapsacks_per_item_max: int | None = None, x=5, timeout=60 * 5):
+    if knapsacks_per_item_max is None:
+        knapsacks_per_item_max = number_of_knapsacks
+    gurobi_wins = 0
+    tmkpa_wins = 0
+    print(f"Number of knapsacks: {number_of_knapsacks}\nNumber of items: {number_of_items:_}\n"
+          f"Number of weight classes: {number_of_weightclasses}")
+    for i in range(x):
+        seed = random.randrange(sys.maxsize)
+        print(f"Seed: {seed}")
+
+        required_create_time = timeit.timeit(lambda: create_testinstance(number_of_knapsacks, number_of_items,
+                                                                         number_of_weightclasses,
+                                                                         min_weight, max_weight, min_capacity,
+                                                                         max_capacity, knapsacks_per_item_min,
+                                                                         knapsacks_per_item_max, seed), number=1)
+
+        print(f"Required time to create test instance: {required_create_time}")
+
+        result_value = multiprocessing.Value("d", -1)
+        p = multiprocessing.Process(target=_test_tmkpa_wrapper, args=(
+            result_value, number_of_knapsacks, number_of_items, number_of_weightclasses,
+            min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
+            knapsacks_per_item_max, seed))
+        p.start()
+        p.join(timeout + required_create_time * 2)
+        if p.is_alive():
+            p.terminate()
+            result_value.value = -1
+            print("Timeout")
+
+        print(f"Required time to solve TMKPA: {result_value.value}")
+
+        knapsacks, items, item_classes, seed = create_testinstance(number_of_knapsacks, number_of_items,
+                                                                   number_of_weightclasses,
+                                                                   min_weight, max_weight, min_capacity,
+                                                                   max_capacity, knapsacks_per_item_min,
+                                                                   knapsacks_per_item_max, seed)
+        old_stdout = sys.stdout  # Gurobi sometimes prints to stdout, even with output flag set to 0
+        sys.stdout = Dummy_Buffer()
+
+        start = timeit.default_timer()
+        x, _ = gurobi.solve(knapsacks, items, timelimit=timeout)
+        end = timeit.default_timer()
+        if x == -1:
+            gurobi_time = -1
+        else:
+            gurobi_time = end - start
+
+        sys.stdout = old_stdout
+
+        print(f"Required time to solve Gurobi: {gurobi_time}")
+
+        if result_value.value == -1 and gurobi_time == -1:
+            print("Both timed out")
+        elif result_value.value == -1:
+            print("TMKPA timed out")
+            gurobi_wins += 1
+        elif gurobi_time == -1:
+            print("Gurobi timed out")
+            tmkpa_wins += 1
+        elif result_value.value < gurobi_time:
+            print("TMKPA won")
+            tmkpa_wins += 1
+        elif result_value.value > gurobi_time:
+            print("Gurobi won")
+            gurobi_wins += 1
+        else:
+            print("Draw")
+
+    print(f"TMKPA won {tmkpa_wins} times")
+    print(f"Gurobi won {gurobi_wins} times")
+
+
 if __name__ == '__main__':
     perform_multiple_tests_json(10)
+    with open("./gurobi_run_output.txt", 'w') as sys.stdout:
+        run_against_gurobi(5, 100_000, 5, x=10)
