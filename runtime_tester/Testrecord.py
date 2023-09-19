@@ -12,7 +12,7 @@ class Testrecord(TypedDict):
     knapsacks_per_item_min: int
     knapsacks_per_item_max: int
     seed: int
-    required_time_tmkpa: float
-    required_time_mtm_extended: float
-    required_cpu_time_tmkpa: float
-    required_cpu_time_mtm_extended: float
+    required_time_tmkpa: float | None
+    required_time_mtm_extended: float | None
+    required_cpu_time_tmkpa: float | None
+    required_cpu_time_mtm_extended: float | None

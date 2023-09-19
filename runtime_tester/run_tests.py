@@ -78,6 +78,7 @@ def timeit_wrapper(instance, cpu_time: bool, result_value, number_of_knapsacks, 
         pass  # timeouts are handled by the main process
     except Exception as e:
         print(f"{e}")
+    print(f"Finished {instance.__class__.__name__}")
 
 
 def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses,
