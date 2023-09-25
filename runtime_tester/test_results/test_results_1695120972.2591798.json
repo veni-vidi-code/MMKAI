@@ -11,9 +11,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 8160151624611568204,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.34019259999990936,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -27,9 +27,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 3885132683117650516,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.32465320000005704,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -43,9 +43,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1316639506708990000,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.2901768000001539,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -59,9 +59,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 8807402675668964747,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.39914950000002136,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -75,9 +75,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 8930129043080853149,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.4462508000001435,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -91,9 +91,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1934918559224760426,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.4664686000000984,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -107,9 +107,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 9061619302761402984,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.3727694999997766,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -123,9 +123,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 487678226584540152,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.3555546999996295,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -139,9 +139,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 2612131241339227797,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.3662403999996968,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -155,9 +155,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1349797351412648895,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.4016107999996166,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     }
   ],
@@ -173,9 +173,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1828705210845947153,
-      "required_time_tmkpa": 15.243797600000107,
+      "required_time_MMKAI": 15.243797600000107,
       "required_time_mtm_extended": 67.54351240000005,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -189,9 +189,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 5731984463036069482,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 106.26080249999995,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -205,9 +205,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 3222044634194961001,
-      "required_time_tmkpa": 13.282886399999825,
+      "required_time_MMKAI": 13.282886399999825,
       "required_time_mtm_extended": 69.80368869999984,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -221,9 +221,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1497271505246062693,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 66.96818090000033,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -237,9 +237,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 7113808737154406352,
-      "required_time_tmkpa": 14.78908790000014,
+      "required_time_MMKAI": 14.78908790000014,
       "required_time_mtm_extended": 56.98645519999991,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -253,9 +253,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1953240126242929090,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 108.09426739999981,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -269,9 +269,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 6149037707712415656,
-      "required_time_tmkpa": 6.0016115999997055,
+      "required_time_MMKAI": 6.0016115999997055,
       "required_time_mtm_extended": 44.11093089999986,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -285,9 +285,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 8211913090130159932,
-      "required_time_tmkpa": 24.972323199999664,
+      "required_time_MMKAI": 24.972323199999664,
       "required_time_mtm_extended": 48.647343999999975,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -301,9 +301,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 4554380584181362439,
-      "required_time_tmkpa": 7.148034499999994,
+      "required_time_MMKAI": 7.148034499999994,
       "required_time_mtm_extended": 48.02861949999988,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -317,9 +317,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 5816159219460204001,
-      "required_time_tmkpa": 22.705064199999924,
+      "required_time_MMKAI": 22.705064199999924,
       "required_time_mtm_extended": 66.85658330000024,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     }
   ],
@@ -335,9 +335,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 8908198710908027106,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -351,9 +351,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 8240630080044581714,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -367,9 +367,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1058778579921270928,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -383,9 +383,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 4810775016606268636,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -399,9 +399,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 6132177275994387789,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -415,9 +415,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 8491683547792492401,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -431,9 +431,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 7651005742360240019,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -447,9 +447,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 1921104071522522026,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -463,9 +463,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 7059488930574977300,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -479,9 +479,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 10,
       "seed": 7846722760723520381,
-      "required_time_tmkpa": 156.2551414999998,
+      "required_time_MMKAI": 156.2551414999998,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     }
   ],
@@ -497,9 +497,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 4243056342834960486,
-      "required_time_tmkpa": 1.9353260999996564,
+      "required_time_MMKAI": 1.9353260999996564,
       "required_time_mtm_extended": 0.3119237000000794,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -513,9 +513,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 7209876101542087809,
-      "required_time_tmkpa": 0.12255769999956101,
+      "required_time_MMKAI": 0.12255769999956101,
       "required_time_mtm_extended": 0.33151100000031875,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -529,9 +529,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 7931682939759281054,
-      "required_time_tmkpa": 6.388955399999759,
+      "required_time_MMKAI": 6.388955399999759,
       "required_time_mtm_extended": 0.32630280000012135,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -545,9 +545,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 4488207828696825982,
-      "required_time_tmkpa": 2.1771771000003355,
+      "required_time_MMKAI": 2.1771771000003355,
       "required_time_mtm_extended": 0.34392710000065563,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -561,9 +561,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 4745771828514551109,
-      "required_time_tmkpa": 0.09133079999992333,
+      "required_time_MMKAI": 0.09133079999992333,
       "required_time_mtm_extended": 0.0005992000005790032,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -577,9 +577,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 3309085267507457824,
-      "required_time_tmkpa": 34.72792269999991,
+      "required_time_MMKAI": 34.72792269999991,
       "required_time_mtm_extended": 0.31922600000052626,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -593,9 +593,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 8686695777436357946,
-      "required_time_tmkpa": -1,
+      "required_time_MMKAI": -1,
       "required_time_mtm_extended": 0.37270249999983207,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -609,9 +609,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 8202286537558294784,
-      "required_time_tmkpa": 3.545675299999857,
+      "required_time_MMKAI": 3.545675299999857,
       "required_time_mtm_extended": 0.3370524000001751,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -625,9 +625,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 3157818296264692898,
-      "required_time_tmkpa": 15.310866599999827,
+      "required_time_MMKAI": 15.310866599999827,
       "required_time_mtm_extended": 0.33527410000078817,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -641,9 +641,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 952109073592465221,
-      "required_time_tmkpa": 0.03403920000073413,
+      "required_time_MMKAI": 0.03403920000073413,
       "required_time_mtm_extended": 0.0005917000007684692,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     }
   ],
@@ -659,9 +659,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 584897082167581214,
-      "required_time_tmkpa": 0.5624848999996175,
+      "required_time_MMKAI": 0.5624848999996175,
       "required_time_mtm_extended": 0.014885099999446538,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -675,9 +675,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 5911412028044995504,
-      "required_time_tmkpa": 0.3430974000002607,
+      "required_time_MMKAI": 0.3430974000002607,
       "required_time_mtm_extended": 0.0112834000001385,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -691,9 +691,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 2050619706951541355,
-      "required_time_tmkpa": 10.64071580000018,
+      "required_time_MMKAI": 10.64071580000018,
       "required_time_mtm_extended": 0.027595100000326056,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -707,9 +707,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 8834905442818711368,
-      "required_time_tmkpa": 0.42357350000020233,
+      "required_time_MMKAI": 0.42357350000020233,
       "required_time_mtm_extended": 0.012120000000322761,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -723,9 +723,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 7492995597840896686,
-      "required_time_tmkpa": 0.21860120000019378,
+      "required_time_MMKAI": 0.21860120000019378,
       "required_time_mtm_extended": 0.006866400000035355,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -739,9 +739,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 4563632918031773669,
-      "required_time_tmkpa": 0.5268222999993668,
+      "required_time_MMKAI": 0.5268222999993668,
       "required_time_mtm_extended": 66.65598640000007,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -755,9 +755,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 986360009824682244,
-      "required_time_tmkpa": 1.047357400000692,
+      "required_time_MMKAI": 1.047357400000692,
       "required_time_mtm_extended": 40.65283709999949,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -771,9 +771,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 8214496220077615834,
-      "required_time_tmkpa": 0.42623809999986406,
+      "required_time_MMKAI": 0.42623809999986406,
       "required_time_mtm_extended": 0.012256800000614021,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -787,9 +787,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 8430094385185480425,
-      "required_time_tmkpa": 0.10944590000053722,
+      "required_time_MMKAI": 0.10944590000053722,
       "required_time_mtm_extended": 0.005049299999882351,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -803,9 +803,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 6618706423954107047,
-      "required_time_tmkpa": 0.7860530999996627,
+      "required_time_MMKAI": 0.7860530999996627,
       "required_time_mtm_extended": 71.16008730000067,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     }
   ],
@@ -821,9 +821,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 1538103119430281614,
-      "required_time_tmkpa": 13.005186400000639,
+      "required_time_MMKAI": 13.005186400000639,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -837,9 +837,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 7994593838939364714,
-      "required_time_tmkpa": 5.8180194999995365,
+      "required_time_MMKAI": 5.8180194999995365,
       "required_time_mtm_extended": 0.1433997999993153,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -853,9 +853,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 2004998971551157269,
-      "required_time_tmkpa": 117.33502110000063,
+      "required_time_MMKAI": 117.33502110000063,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -869,9 +869,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 5484360031668610143,
-      "required_time_tmkpa": 4.7757791000003635,
+      "required_time_MMKAI": 4.7757791000003635,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -885,9 +885,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 5710612894689120355,
-      "required_time_tmkpa": 7.3042829999994865,
+      "required_time_MMKAI": 7.3042829999994865,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -901,9 +901,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 5220396330035982925,
-      "required_time_tmkpa": 48.88561389999995,
+      "required_time_MMKAI": 48.88561389999995,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -917,9 +917,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 6905909671265971957,
-      "required_time_tmkpa": 3.4338035000000673,
+      "required_time_MMKAI": 3.4338035000000673,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -933,9 +933,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 1755589085175605694,
-      "required_time_tmkpa": 4.863800000000083,
+      "required_time_MMKAI": 4.863800000000083,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -949,9 +949,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 1783217656575752856,
-      "required_time_tmkpa": 2.7083488999996916,
+      "required_time_MMKAI": 2.7083488999996916,
       "required_time_mtm_extended": -1,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     },
     {
@@ -965,9 +965,9 @@
       "knapsacks_per_item_min": 1,
       "knapsacks_per_item_max": 2,
       "seed": 2234501602662386229,
-      "required_time_tmkpa": 4.33045729999958,
+      "required_time_MMKAI": 4.33045729999958,
       "required_time_mtm_extended": 0.12729849999959697,
-      "required_cpu_time_tmkpa": null,
+      "required_cpu_time_MMKAI": null,
       "required_cpu_time_mtm_extended": null
     }
   ]

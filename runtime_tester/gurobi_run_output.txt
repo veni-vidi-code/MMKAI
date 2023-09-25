@@ -3,53 +3,53 @@ Number of items: 100_000
 Number of weight classes: 5
 Seed: 8349144160319793509
 Required time to create test instance: 0.3265642000000071
-Required time to solve TMKPA: 55.345901000000026
+Required time to solve MMKAI: 55.345901000000026
 Required time to solve Gurobi: 6.071798600000079
 Gurobi won
 Seed: 2561253306798527690
 Required time to create test instance: 0.33493910000004234
-Required time to solve TMKPA: 7.407176700000036
+Required time to solve MMKAI: 7.407176700000036
 Required time to solve Gurobi: 6.0066401999999925
 Gurobi won
 Seed: 3297666544655960291
 Required time to create test instance: 0.33642459999998664
-Required time to solve TMKPA: 21.983552900000063
+Required time to solve MMKAI: 21.983552900000063
 Required time to solve Gurobi: -1
 Gurobi timed out
 Seed: 1987678171687451466
 Required time to create test instance: 0.33391439999991235
-Required time to solve TMKPA: 13.96877500000005
+Required time to solve MMKAI: 13.96877500000005
 Required time to solve Gurobi: 5.916861400000016
 Gurobi won
 Seed: 3035109759465952954
 Required time to create test instance: 0.35094699999990553
-Required time to solve TMKPA: 75.96519519999993
+Required time to solve MMKAI: 75.96519519999993
 Required time to solve Gurobi: -1
 Gurobi timed out
 Seed: 6961252613165847764
 Required time to create test instance: 0.33039899999994304
-Required time to solve TMKPA: 27.5140793999999
+Required time to solve MMKAI: 27.5140793999999
 Required time to solve Gurobi: -1
 Gurobi timed out
 Seed: 5230095239846684571
 Required time to create test instance: 0.295382600000039
-Required time to solve TMKPA: 4.937949899999921
+Required time to solve MMKAI: 4.937949899999921
 Required time to solve Gurobi: 9.383353499999885
-TMKPA won
+MMKAI won
 Seed: 5840098649406643752
 Required time to create test instance: 0.6975786999998945
-Required time to solve TMKPA: 58.13854739999988
+Required time to solve MMKAI: 58.13854739999988
 Required time to solve Gurobi: -1
 Gurobi timed out
 Seed: 3529580911607221370
 Required time to create test instance: 0.34847510000008697
-Required time to solve TMKPA: 8.936711599999853
+Required time to solve MMKAI: 8.936711599999853
 Required time to solve Gurobi: 6.053550599999653
 Gurobi won
 Seed: 4538450290033336811
 Required time to create test instance: 0.32341730000007374
-Required time to solve TMKPA: 10.299383699999908
+Required time to solve MMKAI: 10.299383699999908
 Required time to solve Gurobi: 5.214091100000132
 Gurobi won
-TMKPA won 5 times
+MMKAI won 5 times
 Gurobi won 5 times

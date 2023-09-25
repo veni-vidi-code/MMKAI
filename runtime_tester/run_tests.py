@@ -11,7 +11,7 @@ import time
 from runtime_tester.Testrecord import Testrecord
 from src import gurobi
 from src.MTM_EXTENDED_iterative import MTM_EXTENDED_iterative
-from src.TMKPA_recursive import TMKPA_recursive
+from src.MMKAI_recursive import MMKAI_recursive
 from src.models.knapsack import Knapsack
 from src.models.item_class import ItemClass
 
@@ -105,7 +105,7 @@ def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses
 
     p = []
 
-    for i, instance in enumerate([(TMKPA_recursive, False), (TMKPA_recursive, True),
+    for i, instance in enumerate([(MMKAI_recursive, False), (MMKAI_recursive, True),
                                   (MTM_EXTENDED_iterative, False), (MTM_EXTENDED_iterative, True)]):
         p.append(multiprocessing.Process(target=timeit_wrapper, args=(
             instance[0], instance[1], times[i], number_of_knapsacks, number_of_items, number_of_weightclasses,
@@ -130,13 +130,13 @@ def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses
     for i, x in enumerate(p):
         x.join()
 
-    tmkpa_time = times[0].value
-    tmkpa_cpu_time = times[1].value
+    MMKAI_time = times[0].value
+    MMKAI_cpu_time = times[1].value
     mtm_extended_time = times[2].value
     mtm_extended_cpu_time = times[3].value
 
-    print(f"Required time to solve TMKPA: {tmkpa_time}")
-    print(f"Required time to solve TMKPA (CPU time): {tmkpa_cpu_time}")
+    print(f"Required time to solve MMKAI: {MMKAI_time}")
+    print(f"Required time to solve MMKAI (CPU time): {MMKAI_cpu_time}")
     print(f"Required time to solve MTM_EXTENDED: {mtm_extended_time}")
     print(f"Required time to solve MTM_EXTENDED (CPU time): {mtm_extended_cpu_time}")
 
@@ -145,8 +145,8 @@ def performe_tests(number_of_knapsacks, number_of_items, number_of_weightclasses
                       min_capacity=min_capacity, max_capacity=max_capacity,
                       knapsacks_per_item_min=knapsacks_per_item_min,
                       knapsacks_per_item_max=knapsacks_per_item_max, seed=seed,
-                      required_time_tmkpa=tmkpa_time, required_time_mtm_extended=mtm_extended_time,
-                      required_cpu_time_tmkpa=tmkpa_cpu_time, required_cpu_time_mtm_extended=mtm_extended_cpu_time)
+                      required_time_MMKAI=MMKAI_time, required_time_mtm_extended=mtm_extended_time,
+                      required_cpu_time_MMKAI=MMKAI_cpu_time, required_cpu_time_mtm_extended=mtm_extended_cpu_time)
 
 
 def performe_x_tests(number_of_knapsacks, number_of_items, number_of_weightclasses,
@@ -191,7 +191,7 @@ def perform_multiple_tests_json(x, base_dir="./test_results"):
             f.write("]")
 
 
-def _test_tmkpa_wrapper(result_value, number_of_knapsacks, number_of_items,
+def _test_MMKAI_wrapper(result_value, number_of_knapsacks, number_of_items,
                         number_of_weightclasses,
                         min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
                         knapsacks_per_item_max, seed):
@@ -200,7 +200,7 @@ def _test_tmkpa_wrapper(result_value, number_of_knapsacks, number_of_items,
                                                                min_weight, max_weight, min_capacity,
                                                                max_capacity, knapsacks_per_item_min,
                                                                knapsacks_per_item_max, seed)
-    instance = TMKPA_recursive(knapsacks=knapsacks, items=items, item_classes=item_classes)
+    instance = MMKAI_recursive(knapsacks=knapsacks, items=items, item_classes=item_classes)
     result_value.value = timeit.timeit(instance.solve, number=1, timer=timeit.default_timer)
     print(f"Finished {instance.__class__.__name__}")  # this will print to stdout, even with it overwritten due to
     # beeing called through multiprocessing
@@ -220,7 +220,7 @@ def run_against_gurobi(number_of_knapsacks, number_of_items, number_of_weightcla
     if knapsacks_per_item_max is None:
         knapsacks_per_item_max = number_of_knapsacks
     gurobi_wins = 0
-    tmkpa_wins = 0
+    MMKAI_wins = 0
     print(f"Number of knapsacks: {number_of_knapsacks}\nNumber of items: {number_of_items:_}\n"
           f"Number of weight classes: {number_of_weightclasses}")
     for i in range(x):
@@ -236,7 +236,7 @@ def run_against_gurobi(number_of_knapsacks, number_of_items, number_of_weightcla
         print(f"Required time to create test instance: {required_create_time}")
 
         result_value = multiprocessing.Value("d", -1)
-        p = multiprocessing.Process(target=_test_tmkpa_wrapper, args=(
+        p = multiprocessing.Process(target=_test_MMKAI_wrapper, args=(
             result_value, number_of_knapsacks, number_of_items, number_of_weightclasses,
             min_weight, max_weight, min_capacity, max_capacity, knapsacks_per_item_min,
             knapsacks_per_item_max, seed))
@@ -247,7 +247,7 @@ def run_against_gurobi(number_of_knapsacks, number_of_items, number_of_weightcla
             result_value.value = -1
             print("Timeout")
 
-        print(f"Required time to solve TMKPA: {result_value.value}")
+        print(f"Required time to solve MMKAI: {result_value.value}")
 
         knapsacks, items, item_classes, seed = create_testinstance(number_of_knapsacks, number_of_items,
                                                                    number_of_weightclasses,
@@ -272,21 +272,21 @@ def run_against_gurobi(number_of_knapsacks, number_of_items, number_of_weightcla
         if result_value.value == -1 and gurobi_time == -1:
             print("Both timed out")
         elif result_value.value == -1:
-            print("TMKPA timed out")
+            print("MMKAI timed out")
             gurobi_wins += 1
         elif gurobi_time == -1:
             print("Gurobi timed out")
-            tmkpa_wins += 1
+            MMKAI_wins += 1
         elif result_value.value < gurobi_time:
-            print("TMKPA won")
-            tmkpa_wins += 1
+            print("MMKAI won")
+            MMKAI_wins += 1
         elif result_value.value > gurobi_time:
             print("Gurobi won")
             gurobi_wins += 1
         else:
             print("Draw")
 
-    print(f"TMKPA won {tmkpa_wins} times")
+    print(f"MMKAI won {MMKAI_wins} times")
     print(f"Gurobi won {gurobi_wins} times")
 
 

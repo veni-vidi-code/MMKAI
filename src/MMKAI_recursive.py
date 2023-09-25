@@ -43,7 +43,7 @@ class MatchingSave:
         return str(self)
 
 
-class TMKPA_recursive:
+class MMKAI_recursive:
     # ONLY FOR MKPA with identical profits
     def __init__(self, item_classes: list[ItemClass], knapsacks: list[Knapsack], items: list[Item]):
         self.knapsacks = knapsacks

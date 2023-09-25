@@ -2,7 +2,7 @@
 
 """
 Test results are stored in the folder test_results. This script evaluates the results and creates a latex table
-containing the average runtime for each combination of variables. The table is written to the files tmkpa.tex and
+containing the average runtime for each combination of variables. The table is written to the files MMKAI.tex and
 mtm_extended.tex.
 
 Always delete the results of the first test run to ensure that the results are not influenced by warmup.
@@ -64,7 +64,7 @@ def get_tests(base_dir="./test_results"):
 
 
 def get_average_times_for_variables():
-    results_tmkpa: dict[tuple[int, int, int], tuple[float, int, int]] = {}
+    results_MMKAI: dict[tuple[int, int, int], tuple[float, int, int]] = {}
     results_mtm_extended: dict[tuple[int, int, int], tuple[float, int, int]] = {}
     for test in get_tests():
         if test["number_of_items"] < minimum_number_of_items:
@@ -75,14 +75,14 @@ def get_average_times_for_variables():
 
         key = (test["number_of_knapsacks"], test["number_of_weightclasses"], test["number_of_items"])
 
-        if "required_time_tmkpa" in test:
-            prev_result_tmkpa = results_tmkpa.get(key, (0, 0, 0))
-            if test["required_time_tmkpa"] >= 3 * 60 or test["required_time_tmkpa"] < -0.5:
-                results_tmkpa[key] = (prev_result_tmkpa[0], int(prev_result_tmkpa[1] + 1),
-                                      int(prev_result_tmkpa[2]))
+        if "required_time_MMKAI" in test:
+            prev_result_MMKAI = results_MMKAI.get(key, (0, 0, 0))
+            if test["required_time_MMKAI"] >= 3 * 60 or test["required_time_MMKAI"] < -0.5:
+                results_MMKAI[key] = (prev_result_MMKAI[0], int(prev_result_MMKAI[1] + 1),
+                                      int(prev_result_MMKAI[2]))
             else:
-                results_tmkpa[key] = (prev_result_tmkpa[0] + test["required_time_tmkpa"], int(prev_result_tmkpa[1]),
-                                      int(prev_result_tmkpa[2] + 1))
+                results_MMKAI[key] = (prev_result_MMKAI[0] + test["required_time_MMKAI"], int(prev_result_MMKAI[1]),
+                                      int(prev_result_MMKAI[2] + 1))
 
         if "required_time_mtm_extended" in test:
             prev_result_mtm_extended = results_mtm_extended.get(key, (0, 0, 0))
@@ -94,13 +94,13 @@ def get_average_times_for_variables():
                                              int(prev_result_mtm_extended[1]),
                                              int(prev_result_mtm_extended[2] + 1))
 
-    for key in results_tmkpa.keys():
-        if results_tmkpa[key][2] != 0:
-            results_tmkpa[key] = (results_tmkpa[key][0] / results_tmkpa[key][2],
-                                  results_tmkpa[key][1], results_tmkpa[key][2])
+    for key in results_MMKAI.keys():
+        if results_MMKAI[key][2] != 0:
+            results_MMKAI[key] = (results_MMKAI[key][0] / results_MMKAI[key][2],
+                                  results_MMKAI[key][1], results_MMKAI[key][2])
         else:
-            results_tmkpa[key] = (-1,
-                                  results_tmkpa[key][1], results_tmkpa[key][2])
+            results_MMKAI[key] = (-1,
+                                  results_MMKAI[key][1], results_MMKAI[key][2])
 
     for key in results_mtm_extended.keys():
         if results_mtm_extended[key][2] != 0:
@@ -110,24 +110,24 @@ def get_average_times_for_variables():
             results_mtm_extended[key] = (-1,
                                          results_mtm_extended[key][1], results_mtm_extended[key][2])
 
-    return results_tmkpa, results_mtm_extended
+    return results_MMKAI, results_mtm_extended
 
 
 def get_dataframes():
-    results_tmkpa, results_mtm_extended = get_average_times_for_variables()
+    results_MMKAI, results_mtm_extended = get_average_times_for_variables()
 
     # create index
-    index = pd.MultiIndex.from_tuples(results_tmkpa.keys(),
+    index = pd.MultiIndex.from_tuples(results_MMKAI.keys(),
                                       names=("Anzahl Rucks\"acke", "Anzahl Gewichtsklassen", "Anzahl Gegenst\"ande"))
 
     # create dataframes
     cols = ["Durchschnittliche Laufzeit", "Anzahl Timeouts", "Erfolgreiche Tests"]
-    df_tmkpa = pd.DataFrame(results_tmkpa.values(), index=index,
+    df_MMKAI = pd.DataFrame(results_MMKAI.values(), index=index,
                             columns=cols)
     df_mtm_extended = pd.DataFrame(results_mtm_extended.values(), index=index,
                                    columns=cols)
 
-    return df_tmkpa, df_mtm_extended
+    return df_MMKAI, df_mtm_extended
 
 
 def write_df_to_latex(df, filename):
@@ -148,10 +148,10 @@ def write_df_to_latex(df, filename):
 
 
 if __name__ == "__main__":
-    df_tmkpa, df_mtm_extended = get_dataframes()
+    df_MMKAI, df_mtm_extended = get_dataframes()
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        print(df_tmkpa)
+        print(df_MMKAI)
         print(df_mtm_extended)
 
-    write_df_to_latex(df_tmkpa, "tmkpa.tex")
+    write_df_to_latex(df_MMKAI, "MMKAI.tex")
     write_df_to_latex(df_mtm_extended, "mtm_extended.tex")
