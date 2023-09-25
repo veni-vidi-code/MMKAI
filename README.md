@@ -2,7 +2,7 @@
 This repository contains the Code to the Bachelorthesis Operationsplanung als Rucksackproblem: Komplexität und Algorithmen für mehrere Rucksäcke (english title: Surgical planning as a Knapsackproblem: Complexity and Algorithms for multiple 
 Knapsacks)
 
-It contains one Algorithm for the multiple knapsackproblem with assignment restrictions (MTM EXTENDED) aswell as one for the multiple knapsackproblem with assignment restrictions and identical Profits (MMKAI).
+It contains one Algorithm for the multiple knapsackproblem with assignment restrictions (MTM EXTENDED) aswell as a matching based algorithm for the multiple knapsackproblem with assignment restrictions and identical Profits (MMKAI).
 
 To use either of the two algorithms import them from the src directory. The classes for the input are in src/models. It is recommended to install the requirements first, however gurobi is only needed to solve the general MKPA or to run some of the tests. 
 

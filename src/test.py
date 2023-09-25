@@ -7,7 +7,6 @@ from gurobi import solve
 from MTM_EXTENDED_recursive import MTM_EXTENDED_recursive
 from MMKAI_recursive import MMKAI_recursive
 from src.MTM_EXTENDED_iterative import MTM_EXTENDED_iterative
-from src.MMKAI_iterative import MMKAI_iterative
 from src.models.knapsack import Knapsack
 from src.models.item_class import ItemClass
 
@@ -41,21 +40,17 @@ if __name__ == '__main__':
     print("Solving...")
 
     class_to_use = input("Class to use (1) MMKAI, (2) MTM_EXTENDED: ")
-    iterative = input("Iterative? (y/n): ")
-    if iterative in ["y", "Y", "j", "J", "yes", "Yes", "YES", "1", "Ja", "ja", "JA"] or bool(iterative):
-        if "1" in class_to_use or "MMKAI" in class_to_use:
-            solver = MMKAI_iterative(weightclasses, knapsacks, items)
-        elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
-            solver = MTM_EXTENDED_iterative(items, knapsacks)
+
+    if "1" in class_to_use or "MMKAI" in class_to_use:
+        solver = MMKAI_recursive(weightclasses, knapsacks, items)
+    elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
+        iterative = input("Iterative? (y/n): ")
+        if iterative in ["y", "Y", "j", "J", "yes", "Yes", "YES", "1", "Ja", "ja", "JA"] or bool(iterative):
+            solver = MTM_EXTENDED_iterative(items=items, knapsacks=knapsacks, item_classes=None)
         else:
-            raise Exception("Wrong class")
+            solver = MTM_EXTENDED_recursive(items=items, knapsacks=knapsacks, item_classes=None)
     else:
-        if "1" in class_to_use or "MMKAI" in class_to_use:
-            solver = MMKAI_recursive(weightclasses, knapsacks, items)
-        elif "2" in class_to_use or "MTM_EXTENDED" in class_to_use:
-            solver = MTM_EXTENDED_recursive(items, knapsacks)
-        else:
-            raise Exception("Wrong class")
+        raise Exception("Wrong class")
 
     start = time.time()
     val, sol = solver.solve()
