@@ -49,7 +49,7 @@ minimum_number_of_items = 1000
 minimum_number_of_knapsacks = 2
 
 
-def get_tests(base_dir="./test_results"):
+def get_tests(base_dir=os.path.join(os.path.dirname(__file__), "test_results")):
     for filename in os.listdir(base_dir):
         with open(f"{base_dir}/{filename}", "r") as f:
             y = json.load(f)
