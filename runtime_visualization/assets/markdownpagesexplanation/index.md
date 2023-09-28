@@ -1,11 +1,11 @@
 # Index
-Wähle die Seite aus zu der du möchtest
+Wählen Sie die Seite aus, zu der Sie möchten.
 
 #### Laufzeitvergleich nach Gewichtsklassen
-Hier finden sich die Datenpunkte der Laufzeit zu einer festen Anzahl an Gewichtsklassen in dreidimensionalen Graphen
+Hier finden Sie die Datenpunkte zur Laufzeit für eine feste Anzahl von Gewichtsklassen in dreidimensionalen Grafiken.
 
 #### Laufzeitvergleich nach Rucksäcken
-Hier finden sich die Datenpunkte der Laufzeit zu einer festen Anzahl an Rucksäcken in dreidimensionalen Graphen
+Hier finden Sie die Datenpunkte zur Laufzeit für eine feste Anzahl von Rucksäcken in dreidimensionalen Grafiken.
 
 #### Timeouts
-Hier findet sich der prozentuale Anteil an Timeouts
+Hier finden Sie den prozentualen Anteil an Timeouts.
