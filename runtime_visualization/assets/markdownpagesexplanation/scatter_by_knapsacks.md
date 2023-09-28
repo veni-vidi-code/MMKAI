@@ -9,10 +9,3 @@ Die Achse der Anzahl an Gegenständen ist logarithmisch skaliert. Die beiden and
 Um einen guten Überblick zu erhalten, ist es empfehlenswert, die dreidimensionalen Graphen zu drehen und aus verschiedenen
 Winkeln zu betrachten. Dies ist durch das Bewegen der Maus mit gedrückter linker Maustaste möglich.
 
-#### Anmerkungen zu den Graphen
-
-In den Graphen wird deutlich, dass die Laufzeit des MMKAI stark von der Anzahl an Gewichtsklassen abhängt.
-Es zeigt sich, dass der MMKAI bei einer geringen Anzahl an Gewichtsklassen und einer geringen Anzahl an Rucksäcken
-deutlich schneller ist als der MTM EXTENDED. Außerdem lässt sich gut sehen, dass der MTM EXTENDED
-deutlich weniger von der Anzahl an Gewichtsklassen abhängt als der MMKAI. Dies ist auch zu erwarten, da
-der MTM EXTENDED anders als der MMKAI nicht über die Anzahl an Gewichtsklassen arbeitet.

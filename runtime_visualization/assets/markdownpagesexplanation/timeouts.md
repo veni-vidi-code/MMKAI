@@ -11,14 +11,3 @@ Um einen guten Überblick zu erhalten, ist es empfehlenswert, die dreidimensiona
 Winkeln zu betrachten. Dies ist durch das Bewegen der Maus bei gedrückter linker Maustaste möglich. Außerdem kann durch
 das Scrollen mit dem Mausrad gezoomt werden, und durch das Bewegen der Maus auf einen Datenpunkt werden die genauen Werte
 dieses Datenpunktes angezeigt. Hierbei gibt "Size" die Größe des Datenpunktes in Prozentpunkten an.
-
-#### Anmerkungen zum Graphen
-
-In dem Graph zeigt sich, dass die Timeouts des MTM EXTENDED hauptsächlich durch die Anzahl an Gegenständen beeinflusst
-werden. Darüber hinaus lässt sich erkennen, dass die Anzahl an Rucksäcken einen deutlich stärkeren Einfluss auf die
-Timeouts des MMKAI hat als auf die des MTM EXTENDED. Dies zeigt sich insbesondere bei $10000$ Gegenständen und wenigen
-Gewichtsklassen. 
-
-Außerdem wird deutlich, dass der MMKAI zwar auch von der Anzahl an Gegenständen abhängt, jedoch deutlich stärker von der
-Anzahl an Gewichtsklassen und Rucksäcken. Dies ist auch zu erwarten, da diese beiden im Exponenten der Laufzeit des
-MMKAI Algorithmus auftreten, während die Anzahl an Gegenständen nur in der Basis auftritt.

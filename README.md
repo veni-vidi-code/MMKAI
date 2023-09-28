@@ -78,7 +78,7 @@ directly (which is not recommended for production use).
 - On all pages in the top right corner you can click to navigate to the other pages
 - On the main page you can click on the buttons to navigate to the other pages
 - On all pages there is an Info button in the bottom right corner. Clicking it will open a popup with additional
-  information about the page and interpretation of the graphs
+  information about the graphs
 - All graphs are interactive. You can simply change your viering perspective, zoom, etc. by using your mouse. Some
   of the graphs also allow you to change one of the parameters by using a slider above the graph. 
 - The graphs are created using plotly. You can find more information about the graphs and how to interact with them
