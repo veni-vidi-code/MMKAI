@@ -45,8 +45,8 @@ from runtime_tester.Testrecord import Testrecord
 
 import pandas as pd
 
-minimum_number_of_items = 1000
-minimum_number_of_knapsacks = 2
+minimum_number_of_items = 0
+minimum_number_of_knapsacks = 0
 
 
 def get_tests(base_dir=os.path.join(os.path.dirname(__file__), "test_results")):

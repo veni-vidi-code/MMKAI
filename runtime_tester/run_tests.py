@@ -157,7 +157,7 @@ def performe_x_tests(number_of_knapsacks, number_of_items, number_of_weightclass
                            knapsacks_per_item_max, None) for _ in range(x)]
 
 
-def perform_multiple_tests_json(x, base_dir="./test_results"):
+def perform_multiple_tests_json(x, base_dir=os.path.join(os.path.dirname(__file__), "test_results")):
     filename = f"{base_dir}/test_results_{time.time()}.json"
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     try:

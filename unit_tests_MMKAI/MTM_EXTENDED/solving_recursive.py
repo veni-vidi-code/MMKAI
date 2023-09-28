@@ -1,6 +1,6 @@
 # Copyright (c) 2023 Tom Mucke
 from src.MTM_EXTENDED_recursive import MTM_EXTENDED_recursive
-from unit_tests.MMKAI_recursive.solving_recursive import TestMMKAI_solve_recursive
+from unit_tests_MMKAI.MMKAI_recursive.solving_recursive import TestMMKAI_solve_recursive
 
 
 class TestMTM_Extended_solve_recursive(TestMMKAI_solve_recursive):
