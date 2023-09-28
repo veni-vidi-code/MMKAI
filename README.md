@@ -66,12 +66,27 @@ This will run a webserver to visualize the results as graphs.
 If you are using a Unix system you might prefer gunicorn. The following however will only run the server using flask
 directly (which is not recommended for production use).
 
+### Start the Server
+
 1. Run `python3 wsgi.py` or `python wsgi.py` depending on your installation
 2. It should print something like `Running on http://...` and you can open the link in your browser
 3. In your browser you can now select the visualization.
 4. To stop the server press `Ctrl+C` in the terminal
 
-For usage instructions of the webpages please refer to the text on the pages.
+### Interact with the website in your browser
+- On all pages you can click on the title to go back to the main page
+- On all pages in the top right corner you can click to navigate to the other pages
+- On the main page you can click on the buttons to navigate to the other pages
+- On all pages there is an Info button in the bottom right corner. Clicking it will open a popup with additional
+  information about the page and interpretation of the graphs
+- All graphs are interactive. You can simply change your viering perspective, zoom, etc. by using your mouse. Some
+  of the graphs also allow you to change one of the parameters by using a slider above the graph. 
+- The graphs are created using plotly. You can find more information about the graphs and how to interact with them
+  here: https://plotly.com/python/
+- Depending on your hardware the graphs might take a while to load. Please be patient.
+- Sometimes there is a lot of information in a graph. To disable a set of Elements in the graph you can click on the
+  corresponding entry in the legend. This will disable the corresponding elements in the graph. You can also click on
+  the corresponding entry in the legend to enable it again.
 
 
 ## Using the algorithms in your own code

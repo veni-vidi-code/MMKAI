@@ -11,7 +11,7 @@ import dash_bootstrap_components as dbc
 import flask
 from dash import Dash, html, dcc
 
-from runtime_visualization.components import footer
+from runtime_visualization.components import footer, canvas, add_callbacks
 
 server = flask.Flask(__name__)
 app = server
@@ -43,9 +43,12 @@ dashapp.layout = html.Div([
     dbc.Container([
         navbar,
         dash.page_container,
-        footer],
+        footer,
+        canvas],
         fluid=True),
 ])
+
+add_callbacks(dashapp)
 
 if __name__ == '__main__':
     dashapp.run(debug=True)
